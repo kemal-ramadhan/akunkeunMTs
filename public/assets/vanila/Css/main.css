@@ -17,11 +17,9 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .box-center {
-    width: 1000px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    width: 100%;
+    padding: 10px;
+    margin: 60% 0px 0px 0px;
 }
 
 .image-box {
@@ -29,8 +27,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .welcome-login {
-    max-width: 500px;
-    margin: 10px;
+    max-width: 350px;
+    margin: 10px auto;
     padding: 20px;
 }
 
@@ -38,13 +36,120 @@ h1, h2, h3, h4, h5, h6 {
     max-width: 400px;
 }
 
+/* fungsi sembunyi */
+.hiden-mobile {
+    display: none;
+}
+
 /* padding */
 .p-small {
     padding: 20px;
 }
 
+/* colors */
+.color-primary {
+    color: var(--primaryColor);
+}
+
+.color-secound {
+    color: var(--seconderyColor);
+}
+
+.color-white {
+    color: #FFFFFF;
+}
 /* tombol */
 .b-primary {
     background-color: var(--primaryColor) !important;
     color: #FFFFFF !important;
+}
+
+.b-secound {
+    background-color: var(--seconderyColor) !important;
+    color: #FFFFFF !important;
+}
+
+.jumbo-screen{
+    margin-top: 10vh;
+    padding: 10px;
+}
+
+.top-space {
+    margin-top: 10vh;
+    margin-bottom: 5vh;
+}
+
+/* text */
+.space-text-50 {
+    line-height: 60px;
+}
+
+.space-text-30 {
+    line-height: 30px;
+}
+
+.space-text-20 {
+    line-height: 25px;
+}
+
+.size-jumbo {
+    font-size: 3.5rem;
+}
+
+.bg-footer {
+    background-color: #343434;
+    color: #FFFFFF;
+    bottom: 0px;
+    padding-top: 20px;
+    padding-bottom: 5px;
+}
+
+.none-style {
+    
+}
+
+/* media lebih dari ukuran 789px / ukuran tab ke atas */
+@media only screen and (min-width: 768px) {
+    .hiden-mobile {
+        display: inline;
+    }
+
+    .box-center {
+        padding: 10px;
+        margin: 0px auto;
+        max-width: 1000px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    .card-login {
+        max-width: 350px;
+    }
+
+    .jumbo-screen{
+        margin-top: 5vh;
+        padding: 10px;
+    }
+
+    .size-jumbo {
+        font-size: 2.5rem;
+    }
+}
+
+/* media ukuran dekstop keatas  */
+@media only screen and (min-width: 1024px) {
+    .card-login {
+        max-width: 400px;
+    }
+
+    .welcome-login {
+        max-width: 500px;
+    }
+
+    .jumbo-screen{
+        margin-top: 25vh;
+        padding: 10px;
+    }
 }

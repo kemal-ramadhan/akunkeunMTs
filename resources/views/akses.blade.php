@@ -19,7 +19,7 @@
 <div class="container">
     <div class="box-center">
         <div class="row">
-            <div class="col-sm-6">
+            <div class="col-sm-6 hiden-mobile">
                 <div class="image-box">
                     <img src="{{asset('assets/icons/welcome.png')}}" class="welcome-login" alt="welcome">
                 </div>

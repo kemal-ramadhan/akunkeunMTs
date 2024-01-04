@@ -1,6 +1,9 @@
 <?php
 
+use App\Http\Controllers\HostController;
+
 use Illuminate\Support\Facades\Route;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -16,3 +19,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('akses');
 });
+
+// user public
+Route::get('/beranda', [HostController::class, 'index']);
+Route::get('/produk-pembayaran', [HostController::class, 'indexProduk']);
+Route::get('/detail-pembayaran', [HostController::class, 'indexDetail']);
