@@ -4,6 +4,7 @@
 
 :root{
     --primaryColor : #50B958;
+    --primaryColorBlur : #A0ECA6;
     --seconderyColor : #32AFD3;
     --therdColor : #F50057;
 }
@@ -51,6 +52,10 @@ h1, h2, h3, h4, h5, h6 {
     color: var(--primaryColor);
 }
 
+.color-primary-blur {
+    color: var(--primaryColorBlur);
+}
+
 .color-secound {
     color: var(--seconderyColor);
 }
@@ -67,6 +72,21 @@ h1, h2, h3, h4, h5, h6 {
 .b-secound {
     background-color: var(--seconderyColor) !important;
     color: #FFFFFF !important;
+}
+
+.b-red {
+    background-color: var(--therdColor) !important;
+    color: #FFFFFF !important;
+}
+
+.b-white {
+    color: #030303 !important;
+    background-color: #FFFFFF !important;
+}
+
+.b-grey {
+    color: #030303 !important;
+    background-color: #f0ebeb !important;
 }
 
 .jumbo-screen{
@@ -104,8 +124,10 @@ h1, h2, h3, h4, h5, h6 {
     padding-bottom: 5px;
 }
 
-.none-style {
-    
+#dataTables_filter {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: end;
 }
 
 /* media lebih dari ukuran 789px / ukuran tab ke atas */

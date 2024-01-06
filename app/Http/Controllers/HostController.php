@@ -32,6 +32,30 @@ class HostController extends Controller
             'active' => 'pembayaran',
         ]);
     }
+    
+    public function indexKeranjang()
+    {
+        return view('public.keranjang', [
+            'title' => 'Keranjang',
+            'active' => 'keranjang',
+        ]);
+    }
+    
+    public function indexPembayaran()
+    {
+        return view('public.pembayaran', [
+            'title' => 'Pembayaran',
+            'active' => 'keranjang',
+        ]);
+    }
+    
+    public function indexRiwayat()
+    {
+        return view('public.riwayat', [
+            'title' => 'Riwayat',
+            'active' => 'riwayat',
+        ]);
+    }
 
     /**
      * Show the form for creating a new resource.
