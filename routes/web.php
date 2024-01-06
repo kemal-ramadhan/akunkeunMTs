@@ -45,3 +45,4 @@ Route::get('/ref-wali', [WaliController::class, 'index'])->name('waliIndex');
 Route::get('/d_wali/{id}', [WaliController::class, 'show'])->name('Detailwali');
 
 Route::post('/c_wali', [WaliController::class, 'storeWali']);
+Route::post('/u_wali', [WaliController::class, 'updateWali']);

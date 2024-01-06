@@ -81,6 +81,24 @@ class WaliController extends Controller
     {
         //
     }
+    
+    public function updateWali(Request $request)
+    {
+        DB::table('orangtuawalis')
+        ->where('id', $request->idWali)
+        ->update([
+            'nama' => $request->nama,
+            'username' => $request->username,
+            'password' => bcrypt($request->password),
+            'email' => $request->email,
+            'no_telepon' => $request->no_telp,
+            'alamat' => $request->alamat,
+            'status' => $request->status,
+            'updated_at' => now()
+        ]);
+
+        return redirect()->route('Detailwali', ['id' => $request->idWali])->with('success', 'Data Telah Diperbaharui!');
+    }
 
     /**
      * Remove the specified resource from storage.
