@@ -404,7 +404,7 @@
                         <!-- Nav Item - User Information -->
                         <li class="nav-item dropdown no-arrow">
                             <button class="nav-link dropdown-toggle" id="profile-menu" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Kemal Ramdhan | Admin Bagian Keuangan</span>
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ auth('guru')->user()->nama }} | Admin Bagian Keuangan</span>
                                 <img class="img-profile rounded-circle"
                                     src="{{asset('assets/icons/undraw_profile.svg')}}">
                             </button>
@@ -423,10 +423,13 @@
                                     Activity Log
                                 </a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
-                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Logout
-                                </a>
+                                <form action="/logout" method="post">
+                                    @csrf
+                                    <button type="submit" class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                        <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Logout
+                                    </button>
+                                </form>
                             </div>
                         </li>
 

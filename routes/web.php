@@ -21,7 +21,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('akses');
-});
+})->name('akses');
+Route::post('/akses', [AdminHostController::class, 'authenticate']);
+Route::post('/logout', [AdminHostController::class, 'logout']);
 
 // user public
 Route::get('/beranda', [HostController::class, 'index']);
@@ -36,13 +38,13 @@ Route::get('/riwayat', [HostController::class, 'indexRiwayat']);
 
 // get
 Route::get('/administrator', [AdminHostController::class, 'akses']);
-Route::get('/dashboard', [AdminHostController::class, 'index']);
+Route::get('/dashboard', [AdminHostController::class, 'index'])->middleware('auth:guru');;
 
-Route::get('/ref-guru', [ReferensiController::class, 'index']);
+Route::get('/ref-guru', [ReferensiController::class, 'index'])->middleware('auth:guru');;
 
 // wali
-Route::get('/ref-wali', [WaliController::class, 'index'])->name('waliIndex');
-Route::get('/d_wali/{id}', [WaliController::class, 'show'])->name('Detailwali');
+Route::get('/ref-wali', [WaliController::class, 'index'])->name('waliIndex')->middleware('auth:guru');;
+Route::get('/d_wali/{id}', [WaliController::class, 'show'])->name('Detailwali')->middleware('auth:guru');;
 
 Route::post('/c_wali', [WaliController::class, 'storeWali']);
 Route::post('/u_wali', [WaliController::class, 'updateWali']);
