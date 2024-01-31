@@ -23,6 +23,7 @@
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
+                                            <th>No</th>
                                             <th>Name</th>
                                             <th>Username</th>
                                             <th>Email</th>
@@ -33,6 +34,7 @@
                                     </thead>
                                     <tfoot>
                                         <tr>
+                                            <th>No</th>
                                             <th>Name</th>
                                             <th>Username</th>
                                             <th>Email</th>
@@ -44,6 +46,7 @@
                                     <tbody>
                                         @foreach ($walis as $wali)
                                         <tr>
+                                            <td>{{$loop->iteration}}</td>
                                             <td>{{$wali->nama}}</td>
                                             <td>{{$wali->username}}</td>
                                             <td>{{$wali->email}}</td>

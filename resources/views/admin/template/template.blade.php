@@ -22,8 +22,6 @@
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
 
-
-
 </head>
 
 <body id="page-top">
@@ -47,9 +45,13 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item">
-                <a class="nav-link" href="/dashboard">
-                    <i class="fas fa-fw fa-circle {{ $active == 'dashboard' ? 'color-primary' : 'color-primary-blur'}}"></i>
-                    <span>Dashboard</span></a>
+                <a class="nav-link {{ $active == 'dashboard' ? 'b-primary' : 'color-primary-blur'}}" href="/dashboard">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-speedometer2" viewBox="0 0 16 16">
+                        <path d="M8 4a.5.5 0 0 1 .5.5V6a.5.5 0 0 1-1 0V4.5A.5.5 0 0 1 8 4M3.732 5.732a.5.5 0 0 1 .707 0l.915.914a.5.5 0 1 1-.708.708l-.914-.915a.5.5 0 0 1 0-.707M2 10a.5.5 0 0 1 .5-.5h1.586a.5.5 0 0 1 0 1H2.5A.5.5 0 0 1 2 10m9.5 0a.5.5 0 0 1 .5-.5h1.5a.5.5 0 0 1 0 1H12a.5.5 0 0 1-.5-.5m.754-4.246a.39.39 0 0 0-.527-.02L7.547 9.31a.91.91 0 1 0 1.302 1.258l3.434-4.297a.39.39 0 0 0-.029-.518z"/>
+                        <path fill-rule="evenodd" d="M0 10a8 8 0 1 1 15.547 2.661c-.442 1.253-1.845 1.602-2.932 1.25C11.309 13.488 9.475 13 8 13c-1.474 0-3.31.488-4.615.911-1.087.352-2.49.003-2.932-1.25A8 8 0 0 1 0 10m8-7a7 7 0 0 0-6.603 9.329c.203.575.923.876 1.68.63C4.397 12.533 6.358 12 8 12s3.604.532 4.923.96c.757.245 1.477-.056 1.68-.631A7 7 0 0 0 8 3"/>
+                      </svg>
+                    <span class="ml-2">Dashboard</span>
+                </a>
             </li>
 
             <!-- Divider -->
@@ -61,15 +63,20 @@
             </div>
 
             <li class="nav-item">
-                <a class="nav-link" href="/ref-wali">
-                    <i class="fas fa-fw fa-circle {{ $active == 'wali' ? 'color-primary' : 'color-primary-blur'}}"></i>
-                    <span>Data Orang tua Atau Wali</span></a>
+                <a class="nav-link {{ $active == 'wali' ? 'b-primary' : 'color-primary-blur'}}" href="/ref-wali">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-people" viewBox="0 0 16 16">
+                        <path d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1zm-7.978-1L7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002-.014.002zM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4m3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0M6.936 9.28a6 6 0 0 0-1.23-.247A7 7 0 0 0 5 9c-4 0-5 3-5 4q0 1 1 1h4.216A2.24 2.24 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816M4.92 10A5.5 5.5 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275ZM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0m3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4"/>
+                    </svg>
+                    <span class="ml-2">Data Orang tua Atau Wali</span></a>
             </li>
             
             <li class="nav-item">
-                <button class="nav-link collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#datasiswa" aria-expanded="false" aria-controls="datasiswa">
-                    <i class="fas fa-fw fa-circle {{ $active == 'siswa' ? 'color-primary' : 'color-primary-blur'}}"></i>
-                    <span>Data Siswa</span>
+                <button class="nav-link collapsed {{ $active == 'siswa' ? 'b-primary' : 'color-primary-blur'}}" type="button" data-bs-toggle="collapse" data-bs-target="#datasiswa" aria-expanded="false" aria-controls="datasiswa">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-add" viewBox="0 0 16 16">
+                        <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7m.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0m-2-6a3 3 0 1 1-6 0 3 3 0 0 1 6 0M8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4"/>
+                        <path d="M8.256 14a4.5 4.5 0 0 1-.229-1.004H3c.001-.246.154-.986.832-1.664C4.484 10.68 5.711 10 8 10q.39 0 .74.025c.226-.341.496-.65.804-.918Q8.844 9.002 8 9c-5 0-6 3-6 4s1 1 1 1z"/>
+                      </svg>
+                    <span class="ml-2">Data Siswa</span>
                 </button>
                 <div id="datasiswa" class="collapse"  aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
                     <div class="b-grey py-2 collapse-inner rounded">
@@ -81,15 +88,19 @@
             </li>
             
             <li class="nav-item">
-                <a class="nav-link" href="/ref-guru">
-                    <i class="fas fa-fw fa-circle {{ $active == 'guru' ? 'color-primary' : 'color-primary-blur'}}"></i>
-                    <span>Data Guru</span></a>
+                <a class="nav-link {{ $active == 'guru' ? 'b-primary' : 'color-primary-blur'}}" href="/ref-guru">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-gear" viewBox="0 0 16 16">
+                        <path d="M11 5a3 3 0 1 1-6 0 3 3 0 0 1 6 0M8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4m.256 7a4.5 4.5 0 0 1-.229-1.004H3c.001-.246.154-.986.832-1.664C4.484 10.68 5.711 10 8 10q.39 0 .74.025c.226-.341.496-.65.804-.918Q8.844 9.002 8 9c-5 0-6 3-6 4s1 1 1 1zm3.63-4.54c.18-.613 1.048-.613 1.229 0l.043.148a.64.64 0 0 0 .921.382l.136-.074c.561-.306 1.175.308.87.869l-.075.136a.64.64 0 0 0 .382.92l.149.045c.612.18.612 1.048 0 1.229l-.15.043a.64.64 0 0 0-.38.921l.074.136c.305.561-.309 1.175-.87.87l-.136-.075a.64.64 0 0 0-.92.382l-.045.149c-.18.612-1.048.612-1.229 0l-.043-.15a.64.64 0 0 0-.921-.38l-.136.074c-.561.305-1.175-.309-.87-.87l.075-.136a.64.64 0 0 0-.382-.92l-.148-.045c-.613-.18-.613-1.048 0-1.229l.148-.043a.64.64 0 0 0 .382-.921l-.074-.136c-.306-.561.308-1.175.869-.87l.136.075a.64.64 0 0 0 .92-.382zM14 12.5a1.5 1.5 0 1 0-3 0 1.5 1.5 0 0 0 3 0"/>
+                      </svg>
+                    <span class="ml-2">Data Guru</span></a>
             </li>
             
             <li class="nav-item">
-                <button class="nav-link collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#produk" aria-expanded="false" aria-controls="produk">
-                    <i class="fas fa-fw fa-circle {{ $active == 'produk' ? 'color-primary' : 'color-primary-blur'}}"></i>
-                    <span>Produk Pembayaran</span>
+                <button class="nav-link collapsed {{ $active == 'produk' ? 'b-primary' : 'color-primary-blur'}}" type="button" data-bs-toggle="collapse" data-bs-target="#produk" aria-expanded="false" aria-controls="produk">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-archive" viewBox="0 0 16 16">
+                        <path d="M0 2a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1v7.5a2.5 2.5 0 0 1-2.5 2.5h-9A2.5 2.5 0 0 1 1 12.5V5a1 1 0 0 1-1-1zm2 3v7.5A1.5 1.5 0 0 0 3.5 14h9a1.5 1.5 0 0 0 1.5-1.5V5zm13-3H1v2h14zM5 7.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5"/>
+                      </svg>
+                    <span class="ml-2">Produk Pembayaran</span>
                 </button>
                 <div id="produk" class="collapse"  aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
                     <div class="b-grey py-2 collapse-inner rounded">
@@ -109,14 +120,21 @@
             </div>
 
             <li class="nav-item">
-                <a class="nav-link" href="/transaksi-online">
-                    <i class="fas fa-fw fa-circle {{ $active == 'online' ? 'color-primary' : 'color-primary-blur'}}"></i>
-                    <span>Transaksi Online</span></a>
+                <a class="nav-link {{ $active == 'online' ? 'b-primary' : 'color-primary-blur'}}" href="/transaksi-online">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cash-coin" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M11 15a4 4 0 1 0 0-8 4 4 0 0 0 0 8m5-4a5 5 0 1 1-10 0 5 5 0 0 1 10 0"/>
+                        <path d="M9.438 11.944c.047.596.518 1.06 1.363 1.116v.44h.375v-.443c.875-.061 1.386-.529 1.386-1.207 0-.618-.39-.936-1.09-1.1l-.296-.07v-1.2c.376.043.614.248.671.532h.658c-.047-.575-.54-1.024-1.329-1.073V8.5h-.375v.45c-.747.073-1.255.522-1.255 1.158 0 .562.378.92 1.007 1.066l.248.061v1.272c-.384-.058-.639-.27-.696-.563h-.668zm1.36-1.354c-.369-.085-.569-.26-.569-.522 0-.294.216-.514.572-.578v1.1zm.432.746c.449.104.655.272.655.569 0 .339-.257.571-.709.614v-1.195z"/>
+                        <path d="M1 0a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h4.083q.088-.517.258-1H3a2 2 0 0 0-2-2V3a2 2 0 0 0 2-2h10a2 2 0 0 0 2 2v3.528c.38.34.717.728 1 1.154V1a1 1 0 0 0-1-1z"/>
+                        <path d="M9.998 5.083 10 5a2 2 0 1 0-3.132 1.65 6 6 0 0 1 3.13-1.567"/>
+                      </svg>
+                    <span class="ml-2">Transaksi Online</span></a>
             </li>
             <li class="nav-item">
-                <button class="nav-link collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#Transaksi" aria-expanded="false" aria-controls="Transaksi">
-                    <i class="fas fa-fw fa-circle {{ $active == 'offline' ? 'color-primary' : 'color-primary-blur'}}"></i>
-                    <span>Transaksi Pembayaran</span>
+                <button class="nav-link collapsed {{ $active == 'offline' ? 'b-primary' : 'color-primary-blur'}}" type="button" data-bs-toggle="collapse" data-bs-target="#Transaksi" aria-expanded="false" aria-controls="Transaksi">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart3" viewBox="0 0 16 16">
+                        <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .49.598l-1 5a.5.5 0 0 1-.465.401l-9.397.472L4.415 11H13a.5.5 0 0 1 0 1H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l.84 4.479 9.144-.459L13.89 4zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
+                      </svg>
+                    <span class="ml-2">Transaksi Pembayaran</span>
                 </button>
                 <div id="Transaksi" class="collapse"  aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
                     <div class="b-grey py-2 collapse-inner rounded">

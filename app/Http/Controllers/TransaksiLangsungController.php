@@ -133,6 +133,7 @@ class TransaksiLangsungController extends Controller
                 ->join('pembayaran_cicilans', 'hub_cicilans.id_produk_cicilan', '=', 'pembayaran_cicilans.id')
                 ->select('pembayaran_cicilans.id', 'pembayaran_cicilans.nama_cicilan', 'pembayaran_cicilans.nominal', 'pembayaran_cicilans.keterangan', 'pembayaran_cicilans.priode_awal', 'pembayaran_cicilans.priode_akhir', 'hub_cicilans.status', 'hub_cicilans.id_siswa', 'hub_cicilans.id as IdCicilan')
                 ->where('hub_cicilans.id_produk_cicilan', $hubSiswa->id_produk_cicilan)
+                ->where('hub_cicilans.id_siswa', $hubSiswa->id_siswa)
                 ->get();
         $riwayat = DB::table('cicilans')
                 ->join('pembayaran_cicilans', 'cicilans.id_produk_cicilan', '=', 'pembayaran_cicilans.id')
@@ -227,6 +228,7 @@ class TransaksiLangsungController extends Controller
             'status' => $request->status,
             'updated_at' => now(),
         ]);
+
         return redirect()->route('transaksi-siswa-cicilan', ['id' => $request->IdCicilan])->with('success', 'Pembayaran Cicilan Telah Diproses dan Disimpan!');
 
     }

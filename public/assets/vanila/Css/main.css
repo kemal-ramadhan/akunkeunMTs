@@ -88,6 +88,32 @@ h1, h2, h3, h4, h5, h6 {
 .color-white {
     color: #FFFFFF;
 }
+
+.nav-item {
+    padding: 5px;
+    box-sizing: border-box;
+}
+
+.nav-item a{
+    border-radius: 5px;
+}
+
+.nav-item button{
+    border-radius: 5px;
+}
+
+.nav-item a:hover{
+    background-color: var(--primaryColor) !important;
+    color: #FFFFFF !important;
+    border-radius: 5px;
+}
+
+.nav-item button:hover{
+    background-color: var(--primaryColor) !important;
+    color: #FFFFFF !important;
+    border-radius: 5px;
+}
+
 /* tombol */
 .b-primary {
     background-color: var(--primaryColor) !important;

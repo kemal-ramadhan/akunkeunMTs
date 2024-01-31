@@ -304,6 +304,28 @@ class RefProdukController extends Controller
         ]);
     }
     
+    public function showRiwayatCicilan($id)
+    {
+        $siswa = DB::table('hub_cicilans')
+                ->join('pembayaran_cicilans', 'hub_cicilans.id_produk_cicilan', '=', 'pembayaran_cicilans.id')
+                ->join('siswas', 'hub_cicilans.id_siswa', '=', 'siswas.id')
+                ->join('kelas', 'siswas.id_kelas', '=', 'kelas.id')
+                ->select('pembayaran_cicilans.id', 'siswas.nisn', 'siswas.nis', 'siswas.nama', 'kelas.kelas_romawi_angka_abjad', 'kelas.nama_kelas', 'siswas.tahun_masuk', 'siswas.status', 'hub_cicilans.status as statusCicilan', 'hub_cicilans.id as idcheck')
+                ->where('pembayaran_cicilans.id', $id)
+                ->get();
+        $totalAllCicilan = DB::table('cicilans')
+                ->where('id_produk_cicilan', $id)
+                ->sum('nominal');
+        return view('admin.based.cicilan.riwayat', [
+            'title' => 'Detail Riwayat Cicilan Pembayaran Siswa',
+            'active' => 'produk',
+            'cicilan' => PembayaranCicilan::find($id),
+            'versis' => Versi::all(),
+            'siswas' => $siswa,
+            'totalCicilan' => $totalAllCicilan
+        ]);
+    }
+    
 
     /**
      * Show the form for editing the specified resource.

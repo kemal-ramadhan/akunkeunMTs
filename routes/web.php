@@ -88,6 +88,7 @@ Route::get('/set-siswa/{id}', [RefProdukController::class, 'showSetSiswa'])->nam
 Route::post('/c_setSiswa', [RefProdukController::class, 'storeHubSiswa']);
 Route::post('/c_setSiswaDetail', [RefProdukController::class, 'storeHubSiswaDetail']);
 Route::get('/d_produk_cicilan/{id}', [RefProdukController::class, 'showDetailCicilan'])->name('Detail-cicilan')->middleware('auth:guru');
+Route::get('/d_riwayat_cicilan/{id}', [RefProdukController::class, 'showRiwayatCicilan'])->name('Detail-cicilan')->middleware('auth:guru');
 Route::post('/u_detail_cicilan', [RefProdukController::class, 'UpdateDetailCicilan'])->middleware('auth:guru');
 Route::get('/add_hub_siswa/{id}', [RefProdukController::class, 'showDetailCicilanSiswa'])->name('add-Detail-cicilan')->middleware('auth:guru');
 
