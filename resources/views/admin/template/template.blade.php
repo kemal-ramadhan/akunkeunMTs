@@ -7,6 +7,9 @@
 
     <title>{{$title}} | Administrator</title>
 
+    <!-- Custom styles for this template-->
+    <link href="{{asset('vendor/css/sb-admin-2.min.css')}}" rel="stylesheet" type="text/css">
+
     {{-- ficon --}}
     <link rel="shortcut icon" href="{{asset('assets/icons/akunkeun.png')}}" type="image/x-icon">
 
@@ -18,8 +21,8 @@
     <link href="{{asset('vendor/fontawesome/css/all.min.css')}}" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
-    <!-- Custom styles for this template-->
-    <link href="{{asset('vendor/css/sb-admin-2.min.css')}}" rel="stylesheet" type="text/css">
+
+
 
 </head>
 
@@ -64,22 +67,15 @@
             </li>
             
             <li class="nav-item">
-                <a class="nav-link" href="charts.html">
+                <button class="nav-link collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#datasiswa" aria-expanded="false" aria-controls="datasiswa">
                     <i class="fas fa-fw fa-circle {{ $active == 'siswa' ? 'color-primary' : 'color-primary-blur'}}"></i>
-                    <span>Data Siswa</span></a>
-            </li>
-            
-            <!-- Nav Item - Utilities Collapse Menu -->
-            <li class="nav-item">
-                <button class="nav-link collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                    <i class="fas fa-fw fa-circle {{ $active == 'penunjang' ? 'color-primary' : 'color-primary-blur'}}"></i>
-                    <span>Data Penunjang</span>
+                    <span>Data Siswa</span>
                 </button>
-                <div id="collapseExample" class="collapse"  aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+                <div id="datasiswa" class="collapse"  aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
                     <div class="b-grey py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Data Penunjang</h6>
-                        <a class="collapse-item" href="utilities-color.html">Data Kelas</a>
-                        <a class="collapse-item" href="utilities-border.html">Data Jabatan</a>
+                        <h6 class="collapse-header">Data Siswa</h6>
+                        <a class="collapse-item" href="/ref-siswa">Data Siswa</a>
+                        <a class="collapse-item" href="/ref-kelas">Kelas</a>
                     </div>
                 </div>
             </li>
@@ -91,9 +87,17 @@
             </li>
             
             <li class="nav-item">
-                <a class="nav-link" href="/ref-produk">
+                <button class="nav-link collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#produk" aria-expanded="false" aria-controls="produk">
                     <i class="fas fa-fw fa-circle {{ $active == 'produk' ? 'color-primary' : 'color-primary-blur'}}"></i>
-                    <span>Produk Pembayaran</span></a>
+                    <span>Produk Pembayaran</span>
+                </button>
+                <div id="produk" class="collapse"  aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+                    <div class="b-grey py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Data Produk Pembayaran</h6>
+                        <a class="collapse-item" href="/ref-produk-langsung">Pembayaran Langsung</a>
+                        <a class="collapse-item" href="/ref-produk-cicilan">Pembayaran Cicilan</a>
+                    </div>
+                </div>
             </li>
 
             <!-- Divider -->
@@ -105,15 +109,22 @@
             </div>
 
             <li class="nav-item">
-                <a class="nav-link" href="charts.html">
-                    <i class="fas fa-fw fa-circle color-primary-blur"></i>
-                    <span>Pembayaran Online</span></a>
+                <a class="nav-link" href="/transaksi-online">
+                    <i class="fas fa-fw fa-circle {{ $active == 'online' ? 'color-primary' : 'color-primary-blur'}}"></i>
+                    <span>Transaksi Online</span></a>
             </li>
-            
             <li class="nav-item">
-                <a class="nav-link" href="charts.html">
-                    <i class="fas fa-fw fa-circle color-primary-blur"></i>
-                    <span>Pembayaran Langsung</span></a>
+                <button class="nav-link collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#Transaksi" aria-expanded="false" aria-controls="Transaksi">
+                    <i class="fas fa-fw fa-circle {{ $active == 'offline' ? 'color-primary' : 'color-primary-blur'}}"></i>
+                    <span>Transaksi Pembayaran</span>
+                </button>
+                <div id="Transaksi" class="collapse"  aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+                    <div class="b-grey py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Transaksi Offline</h6>
+                        <a class="collapse-item" href="/transaksi-offline">Pembayaran</a>
+                        <a class="collapse-item" href="/transaksi-cicilan">Cicilan</a>
+                    </div>
+                </div>
             </li>
 
             <!-- Divider -->
@@ -222,7 +233,10 @@
             <div class="sidebar-card d-none d-lg-flex">
                 <img class="mb-2 text-center" src="{{asset('assets/icons/exit.png')}}" alt="..." style="max-width: 70px;">
                 <p class="text-center mb-2" style="color: black"><strong>Akses Keluar!</strong> Keluar dari akun untuk masuk akun lain!</p>
-                <a class="btn b-red btn-sm" href="/administrator">Keluar</a>
+                <button type="button" class="btn b-red btn-sm" data-bs-toggle="modal" data-bs-target="#logout">
+                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                    Logout
+                </button>
             </div>
 
             <!-- Sidebar Toggler (Sidebar) -->
@@ -404,7 +418,7 @@
                         <!-- Nav Item - User Information -->
                         <li class="nav-item dropdown no-arrow">
                             <button class="nav-link dropdown-toggle" id="profile-menu" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ auth('guru')->user()->nama }} | Admin Bagian Keuangan</span>
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ auth('guru')->user()->nama }} | {{ auth('guru')->user()->jabatan }}</span>
                                 <img class="img-profile rounded-circle"
                                     src="{{asset('assets/icons/undraw_profile.svg')}}">
                             </button>
@@ -423,13 +437,10 @@
                                     Activity Log
                                 </a>
                                 <div class="dropdown-divider"></div>
-                                <form action="/logout" method="post">
-                                    @csrf
-                                    <button type="submit" class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
-                                        <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                        Logout
-                                    </button>
-                                </form>
+                                <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#logout">
+                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Logout
+                                </button>
                             </div>
                         </li>
 
@@ -443,8 +454,9 @@
                 <div aria-live="polite" aria-atomic="true" class="position-relative">
                     <div class="toast-container top-0 end-0 p-3">
                         <div class="show toast" role="alert" aria-live="assertive" aria-atomic="true">
-                            <div class="toast-header">
+                            <div class="toast-header b-primary">
                             <strong class="me-auto">Pesan Sobat Akunkeun</strong>
+                            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
                             </div>
                             <div class="toast-body">
                                 {{ session('success') }}
@@ -455,7 +467,7 @@
                 @endif
 
                 <!-- Begin Page Content -->
-                <div class="container-fluid">
+                <div class="container-fluid" style="font-size: 0.9rem">
 
                     @yield('contain')
 
@@ -486,23 +498,26 @@
         <i class="fas fa-angle-up"></i>
     </a>
 
-    <!-- Logout Modal-->
-    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="login.html">Logout</a>
-                </div>
+    <!-- Logout -->
+    <div class="modal fade" id="logout" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body text-center">
+                <img class="mb-2 text-center" src="{{asset('assets/icons/exit.png')}}" alt="..." style="max-width: 200px;">
+                <h4 class="bold-text" style="color: black">Akses Keluar!</h4>
+                <p class="mb-2" style="color: black">Keluar dari akun untuk masuk akun lain!</p>
             </div>
+            <div class="d-flex justify-content-center mb-3">
+            <button type="button" class="btn btn-secondary mr-3" data-bs-dismiss="modal">Batal</button>
+            <form action="/logout" method="post">
+                @csrf
+                <button type="submit" class="btn b-red" href="#" data-toggle="modal" data-target="#logoutModal">
+                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                    Logout
+                </button>
+            </form>
+            </div>
+        </div>
         </div>
     </div>
 

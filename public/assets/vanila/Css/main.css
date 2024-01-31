@@ -13,6 +13,31 @@ h1, h2, h3, h4, h5, h6 {
     font-family: 'Poppins', sans-serif !important;
 }
 
+/* set data tabels */
+.dataTables_filter label{
+    display: block;
+    float: right;
+}
+
+.dataTables_filter label input{
+    width: 300px;
+}
+
+.dataTables_length label select{
+    width: 70px;
+    display: flex;
+    flex-wrap: nowrap;
+}
+
+.dataTables_paginate{
+    display: block;
+    float: right;
+}
+
+.non-border{
+    border: none;
+}
+
 .bold-text{
     font-weight: bold;
 }
