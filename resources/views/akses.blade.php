@@ -15,6 +15,23 @@
 </head>
 <body>
     
+    {{-- toast --}}
+    @if (session()->has('LoginError'))
+    <div aria-live="polite" aria-atomic="true" class="position-relative">
+        <div class="toast-container top-0 end-0 p-3">
+            <div class="show toast" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="toast-header b-primary">
+                <strong class="me-auto">Pesan Sobat Akunkeun</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body">
+                    {{ session('LoginError') }}
+                </div>
+            </div>
+        </div>
+    </div>
+    @endif
+
 {{-- container --}}
 <div class="container">
     <div class="box-center">
@@ -25,6 +42,8 @@
                 </div>
             </div>
             <div class="col-sm-6">
+                <form action="/akses_public" method="post">
+                @csrf
                 {{-- card box login --}}
                 <div class="card shadow card-login" style="border: none;">
                     <div class="card-body px-5">
@@ -33,21 +52,21 @@
                         @csrf
                         <div class="mb-3">
                             <label for="exampleFormControlInput1" class="form-label bold-text">Email</label>
-                            <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
+                            <input type="email" class="form-control" id="exampleFormControlInput1" name="email" placeholder="name@example.com">
                         </div>
                         <div class="mb-3">
                             <label for="password" class="form-label bold-text">Password</label>
-                            <input type="password" class="form-control" id="password" placeholder="Masukan Password">
+                            <input type="password" class="form-control" id="password" name="password" placeholder="Masukan Password">
                         </div>
                         <div class="d-grid gap-2 col-12 mx-auto mb-5">
-                            <button class="bold-text btn b-primary" type="button">Masuk</button>
+                            <button class="bold-text btn b-primary" type="submit">Masuk</button>
                             <a href="" class="text-center">Bantuan!</a>
                         </div>
                       </form>
                     </div>
                 </div>
                 {{-- end card box login --}}
-
+                </form>
             </div>
         </div>
     </div>

@@ -22,19 +22,34 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('akses');
-})->name('akses');
+
+/*
+|--------------------------------------------------------------------------
+| controller Front atau Public
+|--------------------------------------------------------------------------
+*/
+
+// get
+Route::get('/', [HostController::class, 'akses'])->name('akses');
+Route::get('/beranda', [HostController::class, 'index'])->middleware('auth:wali');
+Route::get('/produk-pembayaran', [HostController::class, 'indexProduk'])->middleware('auth:wali');
+Route::get('/detail-pembayaran', [HostController::class, 'indexDetail'])->middleware('auth:wali');
+Route::get('/keranjang', [HostController::class, 'indexKeranjang'])->middleware('auth:wali');
+Route::get('/pembayaran', [HostController::class, 'indexPembayaran'])->middleware('auth:wali');
+Route::get('/riwayat', [HostController::class, 'indexRiwayat'])->middleware('auth:wali');
+
+// post
+Route::post('/akses_public', [HostController::class, 'authenticate']);
+Route::post('/logout_public', [HostController::class, 'logout']);
+
+/*
+|--------------------------------------------------------------------------
+| controller back atau admin
+|--------------------------------------------------------------------------
+*/
 Route::post('/akses', [AdminHostController::class, 'authenticate']);
 Route::post('/logout', [AdminHostController::class, 'logout']);
 
-// user public
-Route::get('/beranda', [HostController::class, 'index']);
-Route::get('/produk-pembayaran', [HostController::class, 'indexProduk']);
-Route::get('/detail-pembayaran', [HostController::class, 'indexDetail']);
-Route::get('/keranjang', [HostController::class, 'indexKeranjang']);
-Route::get('/pembayaran', [HostController::class, 'indexPembayaran']);
-Route::get('/riwayat', [HostController::class, 'indexRiwayat']);
 
 
 // user admin

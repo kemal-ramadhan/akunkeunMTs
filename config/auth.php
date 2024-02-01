@@ -44,6 +44,10 @@ return [
             'driver' => 'session',
             'provider' => 'gurus',
         ],
+        'wali' => [
+            'driver' => 'session',
+            'provider' => 'walis',
+        ],
     ],
 
     /*
@@ -71,6 +75,10 @@ return [
         'gurus' => [
             'driver' => 'eloquent',
             'model' => App\Models\Guru::class,
+        ],
+        'walis' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Orangtuawali::class,
         ],
 
         // 'users' => [
