@@ -2,6 +2,8 @@
 
 @section('contain')
 <div class="top-space">
+    <form action="/c_pembayaran" enctype="multipart/form-data" method="post">
+    @csrf
     <div class="container">
         <h2 class="text-center bold-text mb-3">FORM PEMBAYARAN!</h2>
         <div class="col-sm-6 mx-auto">
@@ -12,19 +14,27 @@
             <div class="card">
                 <div class="card-body">
                     <h4 class="bold-text mb-3">Detail Pembayaran</h4>
+                    <hr>
+                    @php
+                        $num = 0;
+                    @endphp
+                    @foreach ($pembayarans as $pembayaran)
                     <div class="mb-2">
-                        <h5 class="card-title bold-text mb-3">SPP Bulan Juli</h5>
+                        <h5 class="card-title bold-text mb-3">{{$pembayaran->nama_produk_pembayaran}}</h5>
                         <div class="d-flex justify-content-between align-items-center">
-                            <h6>Kelas : VII/7 <span class="badge b-secound">Fulan bin Fulan A</span></h6>
-                            <h6 class="bold-text">Rp. 50.000,-</h6>
+                            <input type="hidden" name="idPesanan_{{$num}}" value="{{$pembayaran->idPesanan}}">
+                            <h6>Atas Nama : {{$pembayaran->nama}} | <span class="badge b-primary">{{$pembayaran->status}}</span></h6>
+                            <h6 class="bold-text">Rp. {{number_format($pembayaran->nominal,0,',','.')}},-</h6>
                         </div>
                     </div>
-                    <div class="mb-2">
-                        <h5 class="card-title bold-text mb-3">SPP Bulan Juli</h5>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <h6>Kelas : VII/7 <span class="badge b-secound">Fulan bin Fulan A</span></h6>
-                            <h6 class="bold-text">Rp. 50.000,-</h6>
-                        </div>
+                    @php
+                        $num++;
+                    @endphp
+                    @endforeach
+                    <hr>
+                    <div class="d-flex justify-content-between mt-3">
+                        <h6 class="bold-text">Total</h6>
+                        <h6 class="bold-text">Rp. {{number_format($sumTotal,0,',','.')}},-</h6>
                     </div>
                 </div>
             </div>
@@ -33,30 +43,32 @@
                 <div class="card-body">
                     <div class="mb-3">
                         <label for="pengirim" class="form-label">Nama Pengirim</label>
-                        <input type="text" class="form-control" id="pengirim" placeholder="Nama Pengirim">
+                        <input type="text" class="form-control" id="pengirim" placeholder="Nama Pengirim" name="nama_pengirim" required>
                     </div>
                     <div class="mb-3">
                         <label for="nominal" class="form-label">Nominal</label>
-                        <input type="text" class="form-control" id="nominal" placeholder="Nominal">
+                        <input type="text" class="form-control" id="nominal" placeholder="Nominal" name="nominal" value="{{$sumTotal}}" readonly>
                     </div>
                     <div class="mb-3">
                         <label for="Bank" class="form-label">Bank</label>
-                        <input type="text" class="form-control" id="Bank" placeholder="Bank">
+                        <input type="text" class="form-control" id="Bank" placeholder="Bank" name="bank" required>
                     </div>
                     <div class="mb-3">
                         <label for="Bukti" class="form-label">Bukti Transfer (JPG/PNG/PDF)</label>
-                        <input type="file" class="form-control" id="Bukti" placeholder="Bukti">
+                        <input type="file" class="form-control" id="Bukti" placeholder="Bukti" name="bukti" required>
                     </div>
                     <div class="mb-3">
                         <label for="exampleFormControlTextarea1" class="form-label">Keterangan</label>
-                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="keterangan" required></textarea>
                     </div>
                     <div class="d-grid gap-2">
-                        <button class="btn b-primary" type="button">Simpan Bukti dan Bayarkan</button>
+                        <input type="hidden" name="numPesanan" value="{{$num}}">
+                        <button class="btn b-primary" type="submit">Simpan Bukti dan Bayarkan</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</form>
 </div>
 @endsection

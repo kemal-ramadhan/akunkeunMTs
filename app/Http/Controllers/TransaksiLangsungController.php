@@ -293,7 +293,7 @@ class TransaksiLangsungController extends Controller
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
-            Keranjang::destroy($idKeranjang);
+            Keranjang::destroy($request->$idKeranjang);
         }
         return redirect()->route('pilih-siswa')->with('success', 'Pembayaran Telah diproses!');
     }

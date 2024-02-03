@@ -7,6 +7,7 @@ use App\Http\Controllers\RefSiswaController;
 use App\Http\Controllers\WaliController;
 use App\Http\Controllers\RefProdukController;
 use App\Http\Controllers\TransaksiLangsungController;
+use App\Http\Controllers\TransaksiOnlineController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -30,17 +31,24 @@ use Illuminate\Support\Facades\Route;
 */
 
 // get
-Route::get('/', [HostController::class, 'akses'])->name('akses');
-Route::get('/beranda', [HostController::class, 'index'])->middleware('auth:wali');
+Route::get('/akses', [HostController::class, 'akses'])->name('akses');
+Route::get('/', [HostController::class, 'index'])->middleware('auth:wali');
 Route::get('/produk-pembayaran', [HostController::class, 'indexProduk'])->middleware('auth:wali');
-Route::get('/detail-pembayaran', [HostController::class, 'indexDetail'])->middleware('auth:wali');
-Route::get('/keranjang', [HostController::class, 'indexKeranjang'])->middleware('auth:wali');
-Route::get('/pembayaran', [HostController::class, 'indexPembayaran'])->middleware('auth:wali');
-Route::get('/riwayat', [HostController::class, 'indexRiwayat'])->middleware('auth:wali');
+Route::get('/detail-pembayaran/{idProduk}/{idSiswa}', [HostController::class, 'indexDetail'])->name('detailProduk')->middleware('auth:wali');
+Route::get('/keranjang', [HostController::class, 'indexKeranjang'])->name('keranjangPublic')->middleware('auth:wali');
+Route::get('/pembayaran', [HostController::class, 'indexPembayaran'])->name('pembayaran')->middleware('auth:wali');
+Route::get('/riwayat/{status}', [HostController::class, 'indexRiwayat'])->name('riwayat')->middleware('auth:wali');
 
 // post
 Route::post('/akses_public', [HostController::class, 'authenticate']);
 Route::post('/logout_public', [HostController::class, 'logout']);
+Route::post('/c_keranjang_public', [HostController::class, 'storeKeranjang']);
+Route::post('/c_pesanan_public', [HostController::class, 'storePesanan']);
+Route::post('/c_pembayaran', [HostController::class, 'storePembayaranPublic']);
+
+// delete
+Route::get('/h_keranjang_public/{id}', [HostController::class, 'destroyKeranjang']);
+// Route::delete('/h_keranjang_public/{H:id}', [HostController::class, 'destroyKeranjang']);
 
 /*
 |--------------------------------------------------------------------------
@@ -124,3 +132,7 @@ Route::get('/transaksi-cicilan', [TransaksiLangsungController::class, 'indexCici
 Route::get('/transaksi-cicilan-siswa/{id}', [TransaksiLangsungController::class, 'indexCicilanSiswa'])->name('transaksi-siswa-cicilan')->middleware('auth:guru');
 Route::get('/daftar-cicilan-siswa/{id}', [TransaksiLangsungController::class, 'indexCicilanDaftarSiswa'])->name('transaksi-siswa-cicilan')->middleware('auth:guru');
 Route::post('/c_cicilans', [TransaksiLangsungController::class, 'storeCicilan'])->middleware('auth:guru');
+
+// transaksi online
+Route::get('/transaksi-onine/{status}', [TransaksiOnlineController::class, 'index'])->name('TransaksiOnline')->middleware('auth:guru');
+Route::get('/detail-transaksi-online/{id}', [TransaksiOnlineController::class, 'detail'])->name('DetailTransaksiOnline')->middleware('auth:guru');

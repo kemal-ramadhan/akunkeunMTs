@@ -69,16 +69,17 @@
                       <p class="card-text mb-3">{{$produk->keterangan}}</p>
                       <div class="d-flex justify-content-between align-items-center">
                           <h6 class="bold-text">Rp. {{number_format($produk->nominal,0,',','.')}},-</h6>
-                          <a href="#" class="btn b-primary">Bayarkan</a>
+                          <a href="{{route('detailProduk', ['idProduk' => $produk->IdProdukLangsung, 'idSiswa' => $produk->IdSiswa])}}" class="btn b-primary">Bayarkan</a>
                       </div>
                     </div>
                 </div>
             </div>
             {{-- end card --}}
             @endif
-
             @empty
-                
+            <div class="text-center">
+                <img src="{{asset('assets/icons/emptycart.png')}}" alt="emptcart" style="max-width: 300px">
+            </div>
             @endforelse
             
         </div>
@@ -106,9 +107,10 @@
             </div>
             {{-- end card --}}
             @empty
-                
+            <div class="text-center">
+                <img src="{{asset('assets/icons/emptycart.png')}}" alt="emptcart" style="max-width: 300px">
+            </div>
             @endforelse
         </div>
     </div>
-
 @endsection

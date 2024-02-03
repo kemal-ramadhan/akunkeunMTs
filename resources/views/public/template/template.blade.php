@@ -25,7 +25,7 @@
           <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0 links">
               <li class="nav-item">
-                <a class="nav-link {{ $active == 'beranda' ? 'active' : ''}}" aria-current="page" href="/beranda">Beranda</a>
+                <a class="nav-link {{ $active == 'beranda' ? 'active' : ''}}" aria-current="page" href="/">Beranda</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link {{ $active == 'pembayaran' ? 'active' : ''}}" href="/produk-pembayaran">Pembayaran</a>
@@ -34,7 +34,7 @@
                 <a class="nav-link {{ $active == 'keranjang' ? 'active' : ''}}" href="/keranjang">Keranjang</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link {{ $active == 'riwayat' ? 'active' : ''}}" href="/riwayat">Riwayat Pembayaran</a>
+                <a class="nav-link {{ $active == 'riwayat' ? 'active' : ''}}" href="/riwayat/{{ $status = 'Menunggu Konfirmasi'}}">Riwayat Pembayaran</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link {{ $active == 'cicilan' ? 'active' : ''}}" href="/cicilan
@@ -62,6 +62,23 @@
         </div>
     </nav>
     {{-- end navbar --}}
+
+    {{-- toast --}}
+    @if (session()->has('success'))
+    <div aria-live="polite" aria-atomic="true" class="position-relative">
+        <div class="toast-container top-0 end-0 p-3">
+            <div class="show toast" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="toast-header b-primary">
+                <strong class="me-auto">Pesan Sobat Akunkeun</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body">
+                    {{ session('success') }}
+                </div>
+            </div>
+        </div>
+    </div>
+    @endif
 
     {{-- content --}}
     @yield('contain')
