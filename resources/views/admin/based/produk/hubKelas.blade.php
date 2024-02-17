@@ -4,7 +4,7 @@
 <!-- Page Heading -->
 <h1 class="h3 mb-4 text-gray-800"><b>Data Referensi / Produk Langsung / {{$pembayaran->nama_produk_pembayaran}}</b></h1>
 
-<div class="row">
+<div class="container row">
     <div class="card col-sm-5 mr-3 mb-5 shadow-sm">
         <div class="card-body text-gray-800">
           <h5 class="mb-3"><b>Detail Data</b></h5>

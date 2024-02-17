@@ -68,7 +68,7 @@
         </div>
         <div class="col-sm-12 mb-3">
           <label for="exampleFormControlTextarea1" class="form-label">Alamat</label>
-          <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="alamat">{{$siswa[0]->alamat}}</textarea>
+          <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="alamat" required>{{$siswa[0]->alamat}}</textarea>
         </div>
         <div class="col-sm-6 mb-3">
           <label for="kelas" class="form-label">Nama Orang Tua</label>
@@ -96,6 +96,50 @@
       </div>
     </div>
     </form>
+</div>
+
+<!-- DataTales Example -->
+<div class="card shadow mb-4">
+  <div class="card-body">
+      <div class="d-flex justify-content-between mb-3 mt-3">
+          <h5>Riwayat Pembayaran Siswa</h5>
+          <button type="button" class="btn b-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+              + Tambah Data Baru
+          </button>
+      </div>
+      <div class="table-responsive">
+          <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+              <thead>
+                  <tr>
+                      <th>No</th>
+                      <th>Nama Pembayaran</th>
+                      <th>Tanggal Pembayaran</th>
+                      <th>Status</th>
+                  </tr>
+              </thead>
+              <tfoot>
+                  <tr>
+                    <th>No</th>
+                      <th>Nama Pembayaran</th>
+                      <th>Tanggal Pembayaran</th>
+                      <th>Status</th>
+                  </tr>
+              </tfoot>
+              <tbody>
+                @forelse ($riwayats as $riwayat)
+                <tr>
+                  <td>{{$loop->iteration}}</td>
+                  <td>{{$riwayat->nama_produk_pembayaran}}</td>
+                  <td>{{$riwayat->updated_at}}</td>
+                  <td><span class="badge b-primary">{{$riwayat->status}}</span></td>
+                </tr>
+                @empty
+                    
+                @endforelse
+              </tbody>
+          </table>
+      </div>
+  </div>
 </div>
 
 @endsection

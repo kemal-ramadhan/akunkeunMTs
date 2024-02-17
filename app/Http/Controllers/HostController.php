@@ -10,6 +10,7 @@ use App\Models\Siswa;
 use App\Models\ProdukLangsung;
 use App\Models\Keranjang;
 use App\Models\Pesanan;
+use App\Models\Cicilan;
 
 use Illuminate\Support\Facades\Storage;
 
@@ -34,7 +35,7 @@ class HostController extends Controller
  
         if (Auth::guard('wali')->attempt($credit)) {
             $request->session()->regenerate();
-            return redirect()->intended('/beranda');
+            return redirect()->intended('/');
         }
  
         return back()->with('LoginError', 'Akses Masuk Salah, Periksa lagi akses masuknya!');
@@ -118,6 +119,22 @@ class HostController extends Controller
         ]);
     }
     
+    public function indexCicilan()
+    {
+        $produkCicilan = DB::table('hub_cicilans')
+            ->join('pembayaran_cicilans', 'hub_cicilans.id_produk_cicilan', '=', 'pembayaran_cicilans.id')
+            ->join('siswas', 'hub_cicilans.id_siswa', '=', 'siswas.id')
+            ->join('orangtuawalis', 'siswas.id_ortu', '=', 'orangtuawalis.id')
+            ->select('pembayaran_cicilans.id as IdProdukCicilan', 'pembayaran_cicilans.nama_cicilan', 'pembayaran_cicilans.nominal', 'pembayaran_cicilans.keterangan', 'pembayaran_cicilans.priode_awal', 'pembayaran_cicilans.priode_akhir', 'hub_cicilans.status', 'hub_cicilans.id_siswa', 'hub_cicilans.id as IdCicilan', 'siswas.nama', 'siswas.id as IdSiswa', 'orangtuawalis.nama as wali')
+            ->where('orangtuawalis.id', auth('wali')->user()->id)
+            ->get();
+        return view('public.cicilans', [
+            'title' => 'cicilan Saya',
+            'active' => 'cicilans',
+            'cicilans' => $produkCicilan,
+        ]);
+    }
+    
     public function indexDetail($parameterProduk, $parameterSiswa)
     {
         return view('public.detail', [
@@ -125,6 +142,53 @@ class HostController extends Controller
             'active' => 'pembayaran',
             'produk' => ProdukLangsung::find($parameterProduk),
             'siswa' => Siswa::find($parameterSiswa),
+        ]);
+    }
+    
+    public function indexDetailCicilan($parameterProdukCicilan, $parameterSiswa)
+    {
+        $produkCicilan = DB::table('hub_cicilans')
+                ->join('pembayaran_cicilans', 'hub_cicilans.id_produk_cicilan', '=', 'pembayaran_cicilans.id')
+                ->select('pembayaran_cicilans.id as IdProdukCicilan', 'pembayaran_cicilans.nama_cicilan', 'pembayaran_cicilans.nominal', 'pembayaran_cicilans.keterangan', 'pembayaran_cicilans.priode_awal', 'pembayaran_cicilans.priode_akhir', 'hub_cicilans.status', 'hub_cicilans.id_siswa as IdSiswa', 'hub_cicilans.id as IdCicilan')
+                ->where('hub_cicilans.id_produk_cicilan', $parameterProdukCicilan)
+                ->where('hub_cicilans.id_siswa', $parameterSiswa)
+                ->get();
+        $riwayat = DB::table('cicilans')
+                ->join('pembayaran_cicilans', 'cicilans.id_produk_cicilan', '=', 'pembayaran_cicilans.id')
+                ->select('cicilans.id', 'pembayaran_cicilans.nama_cicilan', 'cicilans.id_siswa', 'cicilans.nominal', 'cicilans.keterangan', 'cicilans.tanggal_bayar', 'cicilans.status')
+                ->where('cicilans.id_produk_cicilan', $parameterProdukCicilan)
+                ->where('cicilans.id_siswa', $parameterSiswa)
+                ->get();
+        $totalBayar = DB::table('cicilans')
+                ->where('cicilans.id_produk_cicilan', $parameterProdukCicilan)
+                ->where('cicilans.id_siswa', $parameterSiswa)
+                ->sum('nominal');
+        return view('public.detailcicilan', [
+            'title' => 'Detail Pembayaran Cicilan',
+            'active' => 'pembayaran',
+            'cicilan' => $produkCicilan,
+            'riwayats' => $riwayat,
+            'totalBayar' => $totalBayar
+        ]);
+    }
+    
+    public function indexPembayaranCicilan($parameterProdukCicilan, $parameterSiswa)
+    {
+        $produkCicilan = DB::table('hub_cicilans')
+                ->join('pembayaran_cicilans', 'hub_cicilans.id_produk_cicilan', '=', 'pembayaran_cicilans.id')
+                ->select('pembayaran_cicilans.id as IdProdukCicilan', 'pembayaran_cicilans.nama_cicilan', 'pembayaran_cicilans.nominal', 'pembayaran_cicilans.keterangan', 'pembayaran_cicilans.priode_awal', 'pembayaran_cicilans.priode_akhir', 'hub_cicilans.status', 'hub_cicilans.id_siswa as IdSiswa', 'hub_cicilans.id as IdCicilan')
+                ->where('hub_cicilans.id_produk_cicilan', $parameterProdukCicilan)
+                ->where('hub_cicilans.id_siswa', $parameterSiswa)
+                ->get();
+        $totalBayar = DB::table('cicilans')
+                ->where('cicilans.id_produk_cicilan', $parameterProdukCicilan)
+                ->where('cicilans.id_siswa', $parameterSiswa)
+                ->sum('nominal');
+        return view('public.pembayarancicilan', [
+            'title' => 'Detail Pembayaran Cicilan',
+            'active' => 'pembayaran',
+            'cicilan' => $produkCicilan,
+            'totalBayar' => $totalBayar
         ]);
     }
     
@@ -186,6 +250,14 @@ class HostController extends Controller
             'active' => 'riwayat',
             'riwayats' => $riwayat,
             'activeStatus' => $status
+        ]);
+    }
+    
+    public function profile()
+    {
+        return view('public.profile', [
+            'title' => 'Profile Saya',
+            'active' => 'profile',
         ]);
     }
 
@@ -252,7 +324,7 @@ class HostController extends Controller
     public function storePembayaranPublic(Request $request)
     {
         $validationData = $request->validate([
-            'bukti' => 'required|mimes:pdf|file|max:2048',
+            'bukti' => 'required|mimes:pdf,jpg,jpeg|file|max:2048',
         ]);
         $num = $request->numPesanan;
         for ($i=0; $i < $num; $i++) { 
@@ -279,6 +351,41 @@ class HostController extends Controller
                 ]);
         }
         return redirect()->route('riwayat', ['status' => 'Menunggu Konfirmasi'])->with('success', 'Pembayaran Telah Dibuat, Tunggu Konfirmasi dari Pihak Sekolah!');
+    }
+    
+    public function storePembayaranCicilanPublic(Request $request)
+    {
+        $validationData = $request->validate([
+            'bukti' => 'required|mimes:pdf,jpg,jpeg|file|max:2048',
+        ]);
+        
+        DB::table('cicilans')->insertOrIgnore([
+            'id_produk_cicilan' => $request->idProdukCicilan,
+            'id_siswa' => $request->idSiswa,
+            'nominal' => $request->nominal,
+            'keterangan' => $request->keterangan,
+            'tanggal_bayar' => now(),
+            'status' => 'Menunggu Konfirmasi',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        $lastCicilan = Cicilan::max('id');
+
+        DB::table('bukti_pembayaran_cicilans')->insertOrIgnore([
+            'id_cicilan' => $request->idProdukCicilan,
+            'atas_nama' => $request->nama_pengirim,
+            'bank' => $request->bank,
+            'nominal' => $request->nominal,
+            'keterangan' => $request->keterangan,
+            'file' => $validationData['bukti'] = $request->file('bukti')->store('bukti-transfer', 'public'),
+            'tanggal_bayar' => now(),
+            'status' => 'Menunggu Konfirmasi',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        return redirect()->route('detailCicilanPublic', ['idcicilan' => $request->idProdukCicilan, 'idSiswa' => $request->idSiswa])->with('success', 'Pembayaran Telah Dibuat, Tunggu Konfirmasi dari Pihak Sekolah!');
     }
 
     /**

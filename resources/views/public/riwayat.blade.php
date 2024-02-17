@@ -6,7 +6,7 @@
         <h2 class="text-center bold-text">Riwayat Pembayaran</h2>
         <div class="col-sm-6 mx-auto">
             <div class="text-center mb-3 mt-5">
-                <a href="/riwayat/{{ $status = 'Menunggu Pembayaran'}}" class="btn {{ $activeStatus == 'Menunggu Pembayaran' ? 'b-primary' : ''}}">Menunggu Pembayaran</a>
+                <a href="/riwayat/{{ $status = 'Pembayaran'}}" class="btn {{ $activeStatus == 'Pembayaran' ? 'b-primary' : ''}}">Menunggu Pembayaran</a>
                 <a href="/riwayat/{{ $status = 'Menunggu Konfirmasi'}}" class="btn {{ $activeStatus == 'Menunggu Konfirmasi' ? 'b-primary' : ''}}">Proses Pemeriksaan</a>
                 <a href="/riwayat/{{ $status = 'Telah Dibayarkan'}}" class="btn {{ $activeStatus == 'Telah Dibayarkan' ? 'b-primary' : ''}}">Selesai</a>
             </div>
@@ -21,6 +21,11 @@
                             <h6 class="bold-text">Rp. {{number_format($riwayat->nominal,0,',','.')}},-</h6>
                             <span class="badge b-secound">Status : {{$riwayat->status}}</span>
                         </div>
+                        @if ($activeStatus == 'Pembayaran')
+                        <div class="d-grid gap-2 mt-3">
+                            <a href="/pembayaran" class="btn b-primary">Bayarkan</a>
+                        </div>
+                        @endif
                     </div>
                 </div>
             </div>

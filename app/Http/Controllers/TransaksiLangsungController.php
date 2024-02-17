@@ -10,8 +10,14 @@ use App\Models\Keranjang;
 use App\Models\Pesanan;
 use App\Models\HubCicilan;
 
+use Dompdf\Dompdf;
+use Dompdf\Options;
+
+use Illuminate\Support\Facades\Storage;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redirect;
 
 class TransaksiLangsungController extends Controller
 {
@@ -295,7 +301,57 @@ class TransaksiLangsungController extends Controller
             ]);
             Keranjang::destroy($request->$idKeranjang);
         }
-        return redirect()->route('pilih-siswa')->with('success', 'Pembayaran Telah diproses!');
+
+        // cetak struk
+
+        $siswa = DB::table('pesanans')
+                ->join('siswas', 'pesanans.id_siswa', '=', 'siswas.id')
+                ->join('kelas', 'siswas.id_kelas', '=', 'kelas.id')
+                ->select('pesanans.id as IdPesanan', 'siswas.nama', 'kelas.nama_kelas', 'kelas.kelas_romawi_angka_abjad', 'pesanans.updated_at as tglBayar')
+                ->where('pesanans.id', $lastPesanan)
+                ->first();
+        $keranjang = DB::table('detail_pesanans')
+                ->join('produk_langsungs', 'detail_pesanans.id_produk_langsung', '=', 'produk_langsungs.id')
+                ->select('produk_langsungs.nama_produk_pembayaran', 'detail_pesanans.nominal')
+                ->where('detail_pesanans.id_pesanan', $lastPesanan)
+                ->get();
+        $sumkeranjang = DB::table('detail_pesanans')
+                ->where('detail_pesanans.id_pesanan', $lastPesanan)
+                ->sum('detail_pesanans.nominal');
+
+
+        // Buat objek Dompdf baru
+        $dompdf = new Dompdf();
+
+        // Kemungkinan konfigurasi tambahan
+        $options = new Options();
+        $options->set('defaultPaperWidth', 50); // lebar dalam mm
+        $options->set('defaultPaperHeight', 162); // panjang dalam mm
+        $options->set('defaultPaperOrientation', 'portrait'); // orientasi potret
+        $dompdf->setOptions($options);
+
+        // Render view menjadi HTML dengan data pengguna
+        $html = view('templateExport.struk', [
+            'siswa' => $siswa,
+            'keranjangs' => $keranjang,
+            'sumkeranjang' => $sumkeranjang
+        ]);
+
+        // Muat HTML ke Dompdf
+        $dompdf->loadHtml($html);
+
+        // Render PDF
+        $dompdf->render();
+
+        // Simpan PDF ke penyimpanan sementara
+        $namaFile = 'struk_' . time() . '.pdf'; // Nama file unik
+        Storage::put('public/struk/' . $namaFile, $dompdf->output());
+
+        // return redirect()->to(route('pilih-siswa'))->to(route('struk'));
+        return redirect()->route('pilih-siswa')->redirect()->route('struk');
+        // return redirect()->route('pilih-siswa')->with('success', 'Pembayaran Telah diproses!')->to(function () {
+        //     return $dompdf->stream($namaFile);;
+        // });
     }
 
     /**

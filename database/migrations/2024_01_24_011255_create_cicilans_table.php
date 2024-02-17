@@ -17,7 +17,6 @@ return new class extends Migration
             $table->foreignId('id_siswa');
             $table->integer('nominal');
             $table->string('keterangan');
-            $table->string('file');
             $table->date('tanggal_bayar');
             $table->string('status');
             $table->timestamps();

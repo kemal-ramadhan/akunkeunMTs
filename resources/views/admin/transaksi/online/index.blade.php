@@ -21,6 +21,10 @@
     </div>
 </div>
 
+<div class="d-flex mb-3">
+    <a href="/transaksi-onine/{{$status = 'Menunggu Konfirmasi'}}" class="btn mr-3 {{ $activebutton == 'Menunggu Konfirmasi' ? 'b-primary' : 'btn-secound'}}">Menunggu Konfirmasi</a>
+    <a href="/transaksi-onine/{{$status = 'Telah Dibayarkan'}}" class="btn {{ $activebutton == 'Telah Dibayarkan' ? 'b-primary' : 'btn-secound'}}">Selesai</a>
+</div>
 <!-- DataTales Example -->
 <div class="card shadow mb-4">
   <div class="card-body">

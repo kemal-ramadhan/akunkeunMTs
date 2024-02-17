@@ -8,6 +8,9 @@ use App\Http\Controllers\WaliController;
 use App\Http\Controllers\RefProdukController;
 use App\Http\Controllers\TransaksiLangsungController;
 use App\Http\Controllers\TransaksiOnlineController;
+use App\Http\Controllers\PengajuanController;
+use App\Http\Controllers\PengelolaanController;
+use App\Http\Controllers\PengaturanController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -31,13 +34,17 @@ use Illuminate\Support\Facades\Route;
 */
 
 // get
-Route::get('/akses', [HostController::class, 'akses'])->name('akses');
+Route::get('/akses', [HostController::class, 'akses'])->name('akses')->middleware('guest');
 Route::get('/', [HostController::class, 'index'])->middleware('auth:wali');
 Route::get('/produk-pembayaran', [HostController::class, 'indexProduk'])->middleware('auth:wali');
 Route::get('/detail-pembayaran/{idProduk}/{idSiswa}', [HostController::class, 'indexDetail'])->name('detailProduk')->middleware('auth:wali');
 Route::get('/keranjang', [HostController::class, 'indexKeranjang'])->name('keranjangPublic')->middleware('auth:wali');
 Route::get('/pembayaran', [HostController::class, 'indexPembayaran'])->name('pembayaran')->middleware('auth:wali');
 Route::get('/riwayat/{status}', [HostController::class, 'indexRiwayat'])->name('riwayat')->middleware('auth:wali');
+Route::get('/cicilans', [HostController::class, 'indexCicilan'])->middleware('auth:wali');
+Route::get('/detailCicilanPublic/{idcicilan}/{idSiswa}', [HostController::class, 'indexDetailCicilan'])->name('detailCicilanPublic')->middleware('auth:wali');
+Route::get('/PembayaranCicilanPublic/{idcicilan}/{idSiswa}', [HostController::class, 'indexPembayaranCicilan'])->name('PembayaranCicilanPublic')->middleware('auth:wali');
+Route::get('/profile', [HostController::class, 'profile'])->name('profile')->middleware('guest');
 
 // post
 Route::post('/akses_public', [HostController::class, 'authenticate']);
@@ -45,6 +52,7 @@ Route::post('/logout_public', [HostController::class, 'logout']);
 Route::post('/c_keranjang_public', [HostController::class, 'storeKeranjang']);
 Route::post('/c_pesanan_public', [HostController::class, 'storePesanan']);
 Route::post('/c_pembayaran', [HostController::class, 'storePembayaranPublic']);
+Route::post('/c_pembayaran_cicilan_public', [HostController::class, 'storePembayaranCicilanPublic']);
 
 // delete
 Route::get('/h_keranjang_public/{id}', [HostController::class, 'destroyKeranjang']);
@@ -63,7 +71,7 @@ Route::post('/logout', [AdminHostController::class, 'logout']);
 // user admin
 
 // get
-Route::get('/administrator', [AdminHostController::class, 'akses']);
+Route::get('/administrator', [AdminHostController::class, 'akses'])->middleware('guest');
 Route::get('/dashboard', [AdminHostController::class, 'index'])->middleware('auth:guru');
 
 // guru
@@ -136,3 +144,62 @@ Route::post('/c_cicilans', [TransaksiLangsungController::class, 'storeCicilan'])
 // transaksi online
 Route::get('/transaksi-onine/{status}', [TransaksiOnlineController::class, 'index'])->name('TransaksiOnline')->middleware('auth:guru');
 Route::get('/detail-transaksi-online/{id}', [TransaksiOnlineController::class, 'detail'])->name('DetailTransaksiOnline')->middleware('auth:guru');
+Route::post('/u_pesanan', [TransaksiOnlineController::class, 'updatePesanan'])->middleware('auth:guru');
+
+// cicilan
+Route::get('/transaksi-cicilan-online/{status}', [TransaksiOnlineController::class, 'indexCicilan'])->name('TransaksiCicilanOnline')->middleware('auth:guru');
+Route::get('/transaksi_cicilan_online/{id}', [TransaksiOnlineController::class, 'indexCicilanDetail'])->name('DetailTransaksiCicilanOnline')->middleware('auth:guru');
+Route::post('/u_pembayaran_cicilan_online', [TransaksiOnlineController::class, 'updateCicilanOnline'])->middleware('auth:guru');
+
+// pengajuan
+Route::get('/pengajuan', [PengajuanController::class, 'index'])->name('pengajuanOnline')->middleware('auth:guru');
+Route::post('/c_pengajuan_guru', [PengajuanController::class, 'storePengajuanGuru'])->middleware('auth:guru');
+Route::get('/daftar-pengajuan-saya/{status}', [PengajuanController::class, 'indexDaftarPengajuan'])->name('daftarPengajuan')->middleware('auth:guru');
+Route::get('/detail_pengajuan_saya/{id}', [PengajuanController::class, 'indexDetailPengajuan'])->name('DetailPengajuan')->middleware('auth:guru');
+Route::post('/unggah_laporan', [PengajuanController::class, 'UnggahLaporan'])->middleware('auth:guru');
+
+// keuangan
+Route::get('/daftar-pengajuan-keuangan/{status}', [PengajuanController::class, 'indexDaftarPengajuanKeuangan'])->name('daftarPengajuanKeuangan')->middleware('auth:guru');
+Route::get('/detail_pengajuan_keuangan/{id}', [PengajuanController::class, 'indexDetailPengajuanKeuangan'])->name('DetailPengajuanKeuangan')->middleware('auth:guru');
+Route::post('/u_pengajuan_keuangan', [PengajuanController::class, 'updatePengajuanKeuangan'])->middleware('auth:guru');
+
+// kamad
+Route::get('/daftar-pengajuan-kamad/{status}', [PengajuanController::class, 'indexDaftarPengajuanKamad'])->name('daftarPengajuanKamad')->middleware('auth:guru');
+Route::get('/detail_pengajuan_kamad/{id}', [PengajuanController::class, 'indexDetailPengajuanKamad'])->name('DetailPengajuanKeuangan')->middleware('auth:guru');
+Route::post('/u_pengajuan_kamad', [PengajuanController::class, 'updatePengajuanKamad'])->middleware('auth:guru');
+
+
+// pengelolaan Keuangan
+
+// pemasukan
+Route::get('/pemasukan', [PengelolaanController::class, 'index'])->name('pemasukan')->middleware('auth:guru');
+Route::post('/search_pemasukan', [PengelolaanController::class, 'searchPemasukan'])->middleware('auth:guru');
+
+// pengeluaran
+Route::get('/pengeluaran', [PengelolaanController::class, 'indexPengeluaran'])->name('pengeluaran')->middleware('auth:guru');
+Route::post('/c_kategori_pengeluaran', [PengelolaanController::class, 'storePengeluaran'])->middleware('auth:guru');
+Route::get('/detail_pengeluaran/{id}', [PengelolaanController::class, 'indexDetailPengeluaran'])->name('detailpengeluaran')->middleware('auth:guru');
+Route::post('/c_pengeluaran_detail', [PengelolaanController::class, 'storeDetailPengeluaran'])->middleware('auth:guru');
+Route::get('/aksi_detail/{id}', [PengelolaanController::class, 'aksiDetailPengeluaran'])->middleware('auth:guru');
+Route::post('/u_detail_pengeluaran', [PengelolaanController::class, 'UpdateDetailPengeluaran'])->middleware('auth:guru');
+
+// pengaturan
+
+// versi
+Route::get('/versi', [PengaturanController::class, 'indexVersi'])->name('versi')->middleware('auth:guru');
+Route::post('/set_versi', [PengaturanController::class, 'updateVersi'])->middleware('auth:guru');
+Route::post('/c_versi', [PengaturanController::class, 'storeVersi'])->middleware('auth:guru');
+
+// akun
+Route::get('/pengaturan', [PengaturanController::class, 'index'])->name('akun')->middleware('auth:guru');
+Route::get('/detail_akun/{id}', [PengaturanController::class, 'indexDetailAkun'])->name('detailakun')->middleware('auth:guru');
+Route::post('/u_profile_admin', [PengaturanController::class, 'updateProfile'])->middleware('auth:guru');
+
+/*
+|--------------------------------------------------------------------------
+| template export
+|--------------------------------------------------------------------------
+*/
+
+Route::get('/struk', [PengaturanController::class, 'struk'])->name('struk')->middleware('auth:guru');
+Route::get('/unduh_lap/{id}', [PengelolaanController::class, 'LapPengeluaran'])->middleware('auth:guru');

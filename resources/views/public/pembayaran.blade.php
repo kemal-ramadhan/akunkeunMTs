@@ -55,7 +55,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="Bukti" class="form-label">Bukti Transfer (JPG/PNG/PDF)</label>
-                        <input type="file" class="form-control" id="Bukti" placeholder="Bukti" name="bukti" required>
+                        <input type="file" class="form-control" id="Bukti" placeholder="Bukti" name="bukti" accept=".pdf, .jpg, .jpeg" required>
                     </div>
                     <div class="mb-3">
                         <label for="exampleFormControlTextarea1" class="form-label">Keterangan</label>

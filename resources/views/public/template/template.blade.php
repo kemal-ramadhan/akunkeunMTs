@@ -37,8 +37,7 @@
                 <a class="nav-link {{ $active == 'riwayat' ? 'active' : ''}}" href="/riwayat/{{ $status = 'Menunggu Konfirmasi'}}">Riwayat Pembayaran</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link {{ $active == 'cicilan' ? 'active' : ''}}" href="/cicilan
-                ">Cicilan Saya</a>
+                <a class="nav-link {{ $active == 'cicilans' ? 'active' : ''}}" href="/cicilans">Cicilan Saya</a>
               </li>
             </ul>
 
@@ -52,8 +51,8 @@
                   </svg>
                 </button>
                 <ul class="dropdown-menu">
-                  <li><a class="dropdown-item " href="#">Profile</a></li>
-                  <li><a class="dropdown-item" href="#">Riwayat Pembayaran</a></li>
+                  <li><a class="dropdown-item " href="/profile">Profile</a></li>
+                  <li><a class="dropdown-item" href="/riwayat/{{ $status = 'Menunggu Konfirmasi'}}">Riwayat Pembayaran</a></li>
                   <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#logout">Akses Keluar</a></li>
                 </ul>
               </div>

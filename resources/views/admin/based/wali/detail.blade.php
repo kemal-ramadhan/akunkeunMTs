@@ -20,24 +20,24 @@
       <div class="row mt-3">
         <div class="col-sm-4 mb-3">
             <label for="nama" class="form-label">Nama</label>
-            <input type="text" class="form-control" name="nama" id="nama" value="{{$wali->nama}}">
+            <input type="text" class="form-control" name="nama" id="nama" value="{{$wali->nama}}" required>
             <input type="hidden" name="idWali" value="{{$wali->id}}">
         </div>
         <div class="col-sm-4 mb-3">
             <label for="email" class="form-label">Email</label>
-            <input type="email" class="form-control" name="email" id="email" value="{{$wali->email}}">
+            <input type="email" class="form-control" name="email" id="email" value="{{$wali->email}}" required>
         </div>
         <div class="col-sm-4 mb-3">
             <label for="no_telp" class="form-label">Nomor Telepon / WhatsApp</label>
-            <input type="text" class="form-control" name="no_telp" id="no_telp" value="{{$wali->no_telepon}}">
+            <input type="text" class="form-control" name="no_telp" id="no_telp" value="{{$wali->no_telepon}}" required>
         </div>
         <div class="col-sm-4 mb-3">
             <label for="alamat" class="form-label">Alamat</label>
-            <textarea class="form-control" name="alamat" id="alamat" rows="3">{{$wali->alamat}}</textarea>
+            <textarea class="form-control" name="alamat" id="alamat" rows="3" required>{{$wali->alamat}}</textarea>
         </div>
         <div class="col-sm-4 mb-3">
             <label for="username" class="form-label">Username</label>
-            <input type="text" class="form-control" name="username" id="username" value="{{$wali->username}}">
+            <input type="text" class="form-control" name="username" id="username" value="{{$wali->username}}" required>
         </div>
         <div class="col-sm-4 mb-3">
             <label for="password" class="form-label">Password</label>

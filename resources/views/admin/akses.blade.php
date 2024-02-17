@@ -59,9 +59,13 @@
                         <div class="mb-3">
                             <label for="" class="form-label bold-text">Tahun Versi</label>
                             <select class="form-select" name="versi" aria-label="Default select example">
-                                <option selected>2023/2024</option>
-                                <option value="1">2022/2023</option>
-                              </select>
+                                @foreach ($versis as $versi)
+                                @if ($versi->status == 'Aktif')
+                                <option value="{{$versi->id}}" selected>{{$versi->nama_versi}}</option>                            
+                                @endif
+                                <option value="{{$versi->id}}">{{$versi->nama_versi}}</option>
+                                @endforeach
+                            </select>
                         </div>
                         <div class="d-grid gap-2 col-12 mx-auto mb-5">
                             <button class="bold-text btn b-primary" type="submit">Masuk</button>

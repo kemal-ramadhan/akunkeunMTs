@@ -137,12 +137,21 @@ class RefSiswaController extends Controller
                 ->select('siswas.id', 'siswas.nisn', 'siswas.alamat', 'siswas.nis', 'siswas.nama as namaSiswa', 'orangtuawalis.id as IdWali', 'kelas.kelas_romawi_angka_abjad', 'kelas.id as IdKelas', 'siswas.tempat_lahir', 'siswas.tanggal_lahir', 'siswas.no_telepon', 'siswas.email', 'siswas.tahun_masuk', 'siswas.tahun_keluar', 'siswas.status')
                 ->where('siswas.id', $id)
                 ->get();
+        
+        $Riwayat = DB::table('pesanans')
+                ->join('detail_pesanans', 'pesanans.id', '=', 'detail_pesanans.id_pesanan')
+                ->join('produk_langsungs', 'detail_pesanans.id_produk_langsung', '=', 'produk_langsungs.id')
+                ->select('produk_langsungs.nama_produk_pembayaran', 'pesanans.updated_at', 'pesanans.status', 'detail_pesanans.id_produk_langsung')
+                ->where('pesanans.status', 'Telah Dibayarkan')
+                ->where('pesanans.id_siswa', $id)
+                ->get();
         return view('admin.based.siswa.detail', [
             'title' => 'Data Siswa',
             'active' => 'siswa',
             'siswa' => $siswa,
             'kelass' => Kelas::all(),
             'walis' => Orangtuawali::all(),
+            'riwayats' => $Riwayat
         ]);
     }
 

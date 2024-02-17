@@ -120,16 +120,17 @@
             </div>
             <li class="nav-item">
                 <button class="nav-link collapsed {{ $active == 'online' ? 'b-primary' : 'color-primary-blur'}}" type="button" data-bs-toggle="collapse" data-bs-target="#TransaksiOnline" aria-expanded="false" aria-controls="TransaksiOnline">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart3" viewBox="0 0 16 16">
-                        <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .49.598l-1 5a.5.5 0 0 1-.465.401l-9.397.472L4.415 11H13a.5.5 0 0 1 0 1H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l.84 4.479 9.144-.459L13.89 4zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
-                      </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-credit-card-2-front" viewBox="0 0 16 16">
+                        <path d="M14 3a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1zM2 2a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2z"/>
+                        <path d="M2 5.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5zm0 3a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5m3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5m3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5m3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5"/>
+                    </svg>
                     <span class="ml-2">Transaksi Online</span>
                 </button>
                 <div id="TransaksiOnline" class="collapse"  aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
                     <div class="b-grey py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Transaksi Online</h6>
                         <a class="collapse-item" href="/transaksi-onine/{{$status = 'Menunggu Konfirmasi'}}">Pembayaran</a>
-                        <a class="collapse-item" href="/transaksi-cicilan-online">Cicilan</a>
+                        <a class="collapse-item" href="/transaksi-cicilan-online/{{$status = 'Menunggu Konfirmasi'}}">Cicilan</a>
                     </div>
                 </div>
             </li>
@@ -159,31 +160,34 @@
 
             <!-- Nav Item - Utilities Collapse Menu -->
             <li class="nav-item">
-                <button class="nav-link collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#pengajuanOnline" aria-expanded="false" aria-controls="pengajuanOnline">
-                    <i class="fas fa-fw fa-circle {{ $active == 'penunjang' ? 'color-primary' : 'color-primary-blur'}}"></i>
-                    <span>Pengajuan Online</span>
+                <button class="nav-link collapsed {{ $active == 'pengajuan' ? 'b-primary' : 'color-primary-blur'}}" type="button" data-bs-toggle="collapse" data-bs-target="#pengajuanOnline" aria-expanded="false" aria-controls="pengajuanOnline">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bag" viewBox="0 0 16 16">
+                        <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1m3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z"/>
+                    </svg>
+                    <span class="ml-2">Pengajuan Guru</span>
                 </button>
                 <div id="pengajuanOnline" class="collapse"  aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
                     <div class="b-grey py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Data Penunjang</h6>
-                        <a class="collapse-item" href="utilities-color.html">Bagian Keuangan</a>
-                        <a class="collapse-item" href="utilities-border.html">Kepala Madrasah</a>
-                        <a class="collapse-item" href="utilities-border.html">Guru Atau Staf</a>
+                        <h6 class="collapse-header">Data Pengajuan</h6>
+                        <a class="collapse-item" href="/pengajuan">Formulir Pengajuan</a>
+                        <a class="collapse-item" href="/daftar-pengajuan-saya/{{$status = 'Pengajuan'}}">Data Pengajuan</a>
                     </div>
                 </div>
             </li>
 
             <!-- Nav Item - Utilities Collapse Menu -->
             <li class="nav-item">
-                <button class="nav-link collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#pengajuanLangsung" aria-expanded="false" aria-controls="pengajuanLangsung">
-                    <i class="fas fa-fw fa-circle {{ $active == 'penunjang' ? 'color-primary' : 'color-primary-blur'}}"></i>
-                    <span>Pengajuan Langsung</span>
+                <button class="nav-link collapsed {{ $active == 'verifikator' ? 'b-primary' : 'color-primary-blur'}}" type="button" data-bs-toggle="collapse" data-bs-target="#pengajuanLangsung" aria-expanded="false" aria-controls="pengajuanLangsung">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-list-check" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M5 11.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5M3.854 2.146a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0l-.5-.5a.5.5 0 1 1 .708-.708L2 3.293l1.146-1.147a.5.5 0 0 1 .708 0m0 4a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0l-.5-.5a.5.5 0 1 1 .708-.708L2 7.293l1.146-1.147a.5.5 0 0 1 .708 0m0 4a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0l-.5-.5a.5.5 0 0 1 .708-.708l.146.147 1.146-1.147a.5.5 0 0 1 .708 0"/>
+                      </svg>
+                <span class="ml-2">Daftar Pengajuan</span>
                 </button>
                 <div id="pengajuanLangsung" class="collapse"  aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
                     <div class="b-grey py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Data Penunjang</h6>
-                        <a class="collapse-item" href="utilities-color.html">Bagian Keuangan</a>
-                        <a class="collapse-item" href="utilities-border.html">Kepala Madrasah</a>
+                        <a class="collapse-item" href="/daftar-pengajuan-keuangan/{{$status = 'Pengajuan'}}">Bagian Keuangan</a>
+                        <a class="collapse-item" href="/daftar-pengajuan-kamad/{{$status = 'Pengajuan'}}">Kepala Madrasah</a>
                     </div>
                 </div>
             </li>
@@ -197,35 +201,20 @@
             </div>
 
             <li class="nav-item">
-                <a class="nav-link" href="charts.html">
-                    <i class="fas fa-fw fa-circle color-primary-blur"></i>
-                    <span>Pemasukan</span></a>
+                <a class="nav-link {{ $active == 'pemasukan' ? 'b-primary' : 'color-primary-blur'}}" href="/pemasukan">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-wallet2" viewBox="0 0 16 16">
+                        <path d="M12.136.326A1.5 1.5 0 0 1 14 1.78V3h.5A1.5 1.5 0 0 1 16 4.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 13.5v-9a1.5 1.5 0 0 1 1.432-1.499zM5.562 3H13V1.78a.5.5 0 0 0-.621-.484zM1.5 4a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5z"/>
+                      </svg>
+                    <span class="ml-2">Pemasukan</span></a>
             </li>
             
             <li class="nav-item">
-                <a class="nav-link" href="charts.html">
-                    <i class="fas fa-fw fa-circle color-primary-blur"></i>
-                    <span>Pengeluaran</span></a>
-            </li>
-
-            <!-- Divider -->
-            <hr class="sidebar-divider">
-
-            <!-- Heading -->
-            <div class="sidebar-heading">
-                Laporan
-            </div>
-
-            <li class="nav-item">
-                <a class="nav-link" href="charts.html">
-                    <i class="fas fa-fw fa-circle color-primary-blur"></i>
-                    <span>Laporan Pemasukan</span></a>
-            </li>
-            
-            <li class="nav-item">
-                <a class="nav-link" href="charts.html">
-                    <i class="fas fa-fw fa-circle color-primary-blur"></i>
-                    <span>Laporan Pengeluaran</span></a>
+                <a class="nav-link {{ $active == 'pengeluaran' ? 'b-primary' : 'color-primary-blur'}}" href="/pengeluaran">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart-check" viewBox="0 0 16 16">
+                        <path d="M11.354 6.354a.5.5 0 0 0-.708-.708L8 8.293 6.854 7.146a.5.5 0 1 0-.708.708l1.5 1.5a.5.5 0 0 0 .708 0z"/>
+                        <path d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1zm3.915 10L3.102 4h10.796l-1.313 7zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0m7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
+                      </svg>
+                    <span class="ml-2">Pengeluaran</span></a>
             </li>
 
             <!-- Divider -->
@@ -237,15 +226,21 @@
             </div>
 
             <li class="nav-item">
-                <a class="nav-link" href="charts.html">
-                    <i class="fas fa-fw fa-circle color-primary-blur"></i>
-                    <span>Penaturan Akun</span></a>
+                <a class="nav-link {{ $active == 'pengaturan' ? 'b-primary' : 'color-primary-blur'}}" href="/pengaturan">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-gear" viewBox="0 0 16 16">
+                        <path d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492M5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0"/>
+                        <path d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115z"/>
+                      </svg>
+                    <span class="ml-2">Pengaturan Akun</span></a>
             </li>
             
             <li class="nav-item">
-                <a class="nav-link" href="charts.html">
-                    <i class="fas fa-fw fa-circle color-primary-blur"></i>
-                    <span>Pengaturan Versi</span></a>
+                <a class="nav-link {{ $active == 'versi' ? 'b-primary' : 'color-primary-blur'}}" href="/versi">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-terminal-plus" viewBox="0 0 16 16">
+                        <path d="M2 3a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h5.5a.5.5 0 0 1 0 1H2a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h11a2 2 0 0 1 2 2v4a.5.5 0 0 1-1 0V4a1 1 0 0 0-1-1z"/>
+                        <path d="M3.146 5.146a.5.5 0 0 1 .708 0L5.177 6.47a.75.75 0 0 1 0 1.06L3.854 8.854a.5.5 0 1 1-.708-.708L4.293 7 3.146 5.854a.5.5 0 0 1 0-.708M5.5 9a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1H6a.5.5 0 0 1-.5-.5M16 12.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0m-3.5-2a.5.5 0 0 0-.5.5v1h-1a.5.5 0 0 0 0 1h1v1a.5.5 0 0 0 1 0v-1h1a.5.5 0 0 0 0-1h-1v-1a.5.5 0 0 0-.5-.5"/>
+                      </svg>
+                    <span class="ml-2">Pengaturan Versi</span></a>
             </li>
 
             <!-- Divider -->
