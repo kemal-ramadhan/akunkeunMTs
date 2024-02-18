@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('id_siswa');
             $table->integer('nominal');
+            $table->string('invoice');
             $table->string('status');
             $table->timestamps();
         });

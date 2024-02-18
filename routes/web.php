@@ -202,4 +202,6 @@ Route::post('/u_profile_admin', [PengaturanController::class, 'updateProfile'])-
 */
 
 Route::get('/struk', [PengaturanController::class, 'struk'])->name('struk')->middleware('auth:guru');
+Route::get('/inovoice/{id}', [TransaksiLangsungController::class, 'invoice'])->name('invoice')->middleware('auth:guru');
 Route::get('/unduh_lap/{id}', [PengelolaanController::class, 'LapPengeluaran'])->middleware('auth:guru');
+Route::get('/unduh_lap_exel/{id}', [PengelolaanController::class, 'LapPengeluaranExcel'])->middleware('auth:guru');

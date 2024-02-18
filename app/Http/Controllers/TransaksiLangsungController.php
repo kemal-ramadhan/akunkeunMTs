@@ -302,8 +302,24 @@ class TransaksiLangsungController extends Controller
             Keranjang::destroy($request->$idKeranjang);
         }
 
-        // cetak struk
+        $this->unduhStruk($lastPesanan);
 
+        return redirect()->route('invoice', ['id' => $lastPesanan])->with('success', 'Pembayaran Telah diproses!');
+
+    }
+    
+    public function invoice($id)
+    {
+        return view('admin.transaksi.offline.printStruk', [
+            'title' => 'Invoice',
+            'active' => 'offline',
+            'invoice' => Pesanan::find($id)
+        ]);
+
+    }
+
+    public function unduhStruk($lastPesanan)
+    {
         $siswa = DB::table('pesanans')
                 ->join('siswas', 'pesanans.id_siswa', '=', 'siswas.id')
                 ->join('kelas', 'siswas.id_kelas', '=', 'kelas.id')
@@ -343,15 +359,17 @@ class TransaksiLangsungController extends Controller
         // Render PDF
         $dompdf->render();
 
-        // Simpan PDF ke penyimpanan sementara
+        // // Simpan PDF ke penyimpanan sementara
         $namaFile = 'struk_' . time() . '.pdf'; // Nama file unik
         Storage::put('public/struk/' . $namaFile, $dompdf->output());
+        DB::table('pesanans')
+        ->where('id', $lastPesanan)
+        ->update([
+            'invoice' => $namaFile,
+        ]);
 
-        // return redirect()->to(route('pilih-siswa'))->to(route('struk'));
-        return redirect()->route('pilih-siswa')->redirect()->route('struk');
-        // return redirect()->route('pilih-siswa')->with('success', 'Pembayaran Telah diproses!')->to(function () {
-        //     return $dompdf->stream($namaFile);;
-        // });
+        // Logika bisnis atau operasi lainnya
+        return $dompdf->stream($namaFile);
     }
 
     /**

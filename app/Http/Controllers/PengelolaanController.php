@@ -16,10 +16,14 @@ use App\Charts\LaporanPemasukan;
 use Dompdf\Dompdf;
 use Dompdf\Options;
 
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Response;
 
 class PengelolaanController extends Controller
 {
@@ -71,6 +75,49 @@ class PengelolaanController extends Controller
                 'pemasukans' => $pemasukan,
                 'chart' => $chart->build()
             ]);
+        }
+
+        if ($action == 'excel') {
+            $pemasukans = DB::table('pesanans')
+                        ->join('siswas', 'pesanans.id_siswa', '=', 'siswas.id')
+                        ->join('detail_pesanans', 'detail_pesanans.id_pesanan', '=', 'pesanans.id')
+                        ->join('produk_langsungs', 'detail_pesanans.id_produk_langsung', '=', 'produk_langsungs.id')
+                        ->select('detail_pesanans.updated_at as tanggalPemasukan', 'produk_langsungs.nama_produk_pembayaran', 'siswas.nama', 'detail_pesanans.nominal', 'pesanans.status')
+                        ->where('pesanans.status', 'Telah Dibayarkan')
+                        ->whereBetween('detail_pesanans.updated_at', [$dari, $sampai])
+                        ->orWhere('produk_langsungs.id', $dana)
+                        ->get();
+            // Inisialisasi objek Spreadsheet
+            $spreadsheet = new Spreadsheet();
+            $sheet = $spreadsheet->getActiveSheet();
+
+            // Header kolom
+            $sheet->setCellValue('A1', 'No');
+            $sheet->setCellValue('B1', 'Tanggal Pemasukan');
+            $sheet->setCellValue('C1', 'Keterangan');
+            $sheet->setCellValue('D1', 'Dari');
+            $sheet->setCellValue('E1', 'Nominal');
+            $sheet->setCellValue('F1', 'Status');
+
+            // Menulis data pengguna ke sel-sel berikutnya
+            $row = 2;
+            foreach ($pemasukans as $index => $pemasukan) {
+                $sheet->setCellValue('A' . $row, $index + 1);
+                $sheet->setCellValue('B' . $row, $pemasukan->tanggalPemasukan);
+                $sheet->setCellValue('C' . $row, $pemasukan->nama_produk_pembayaran);
+                $sheet->setCellValue('D' . $row, $pemasukan->nama);
+                $sheet->setCellValue('E' . $row, $pemasukan->nominal);
+                $sheet->setCellValue('F' . $row, $pemasukan->status);
+                $row++;
+            }
+
+            // Membuat objek Writer dan menyimpan spreadsheet ke file Excel
+            $writer = new Xlsx($spreadsheet);
+            $filename = 'Laporan' . time() . '.xlsx'; // Nama file Excel yang akan disimpan
+            // Membuat response dan mengirimkan file Excel ke browser
+            return Response::streamDownload(function () use ($writer) {
+                $writer->save('php://output');
+            }, $filename);
         }
 
         if ($action == 'pdf') {
@@ -208,6 +255,64 @@ class PengelolaanController extends Controller
         //     'detailPengeluarans' => $detailPengeluarans,
         //     'totalKeseluruhan' => $total,
         // ]);
+    }
+    
+    public function LapPengeluaranExcel($id)
+    {
+        $pengeluaran = DB::table('pengeluarans')
+                ->join('versis', 'pengeluarans.id_versi', '=', 'versis.id')
+                ->select('pengeluarans.id', 'pengeluarans.nama_pengeluaran', 'pengeluarans.keterangan', 'versis.nama_versi', 'pengeluarans.status')
+                ->where('pengeluarans.id', $id)
+                ->first();
+        $detailPengeluarans = DB::table('detail_pengeluarans')
+                ->join('kakeibos', 'detail_pengeluarans.id_kakeibo', '=', 'kakeibos.id')
+                ->join('produk_langsungs', 'detail_pengeluarans.id_dompet', '=', 'produk_langsungs.id')
+                ->select('detail_pengeluarans.id as IdDetail', 'detail_pengeluarans.tanggal_pengeluaran', 'detail_pengeluarans.nama_pengeluaran', 'kakeibos.jenis', 'detail_pengeluarans.atas_nama', 'detail_pengeluarans.jumlah', 'detail_pengeluarans.harga_satuan', 'detail_pengeluarans.total', 'produk_langsungs.nama_produk_pembayaran', 'detail_pengeluarans.bukti_foto', 'detail_pengeluarans.bukti_pembelian', 'detail_pengeluarans.status')
+                ->where('detail_pengeluarans.id_pengeluaran', $id)
+                ->get();
+        // Menghitung total
+        $total = $detailPengeluarans->sum('total');
+
+        // Inisialisasi objek Spreadsheet
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+        // Header kolom
+        $sheet->setCellValue('A1', 'No');
+        $sheet->setCellValue('B1', 'Tanggal Pembelian');
+        $sheet->setCellValue('C1', 'Keterangan');
+        $sheet->setCellValue('D1', 'Kategori');
+        $sheet->setCellValue('E1', 'Atas Nama');
+        $sheet->setCellValue('F1', 'Jumlah');
+        $sheet->setCellValue('G1', 'Harga Satuan');
+        $sheet->setCellValue('H1', 'Total');
+        $sheet->setCellValue('I1', 'Sumber Dana');
+        $sheet->setCellValue('J1', 'Status');
+
+        // Menulis data pengguna ke sel-sel berikutnya
+        $row = 2;
+        foreach ($detailPengeluarans as $index => $detailPengeluaran) {
+            $sheet->setCellValue('A' . $row, $index + 1);
+            $sheet->setCellValue('B' . $row, $detailPengeluaran->tanggal_pengeluaran);
+            $sheet->setCellValue('C' . $row, $detailPengeluaran->nama_pengeluaran);
+            $sheet->setCellValue('D' . $row, $detailPengeluaran->jenis);
+            $sheet->setCellValue('E' . $row, $detailPengeluaran->atas_nama);
+            $sheet->setCellValue('F' . $row, $detailPengeluaran->jumlah);
+            $sheet->setCellValue('G' . $row, $detailPengeluaran->harga_satuan);
+            $sheet->setCellValue('H' . $row, $detailPengeluaran->total);
+            $sheet->setCellValue('I' . $row, $detailPengeluaran->nama_produk_pembayaran);
+            $sheet->setCellValue('J' . $row, $detailPengeluaran->status);
+            $row++;
+        }
+
+        // Membuat objek Writer dan menyimpan spreadsheet ke file Excel
+        $writer = new Xlsx($spreadsheet);
+        $filename = 'Laporan Pengeluaran - '. time() . '.xlsx'; // Nama file Excel yang akan disimpan
+        // Membuat response dan mengirimkan file Excel ke browser
+        return Response::streamDownload(function () use ($writer) {
+            $writer->save('php://output');
+        }, $filename);
+        
     }
     
     public function aksiDetailPengeluaran($id)
