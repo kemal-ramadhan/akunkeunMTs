@@ -84,7 +84,7 @@
                 <tbody>
                     @forelse ($antrianCicilans as $antrianCicilan)
                         <tr>
-                            <td>{{$loop->Iteration}}</td>
+                            <td>{{$loop->iteration}}</td>
                             <td>{{$antrianCicilan->nama}}</td>
                             <td>
                                 <a href="/transaksi_cicilan_online/{{$antrianCicilan->IdCicilan}}" class="badge b-primary">Konfirmasi</a>

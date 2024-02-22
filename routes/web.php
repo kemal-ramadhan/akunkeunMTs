@@ -217,4 +217,4 @@ Route::get('/unduh_lap_exel/{id}', [PengelolaanController::class, 'LapPengeluara
 | template email
 |--------------------------------------------------------------------------
 */
-Route::get('/invoicePembayaran', [TransaksiOnlineController::class, 'invoicePembayaran'])->middleware('auth:guru');
+Route::get('/invoiceCicilan', [TransaksiOnlineController::class, 'invoiceCicilan'])->middleware('auth:guru');

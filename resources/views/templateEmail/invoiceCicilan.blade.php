@@ -63,7 +63,7 @@
             <h1>PEMBAYARAN BERHASIL</h1>
         </div>
         <div class="information">
-            <h3>Assalamualaikum, Hai {{$wali}}!,</h3>
+            <h3>Assalamualaikum, Hai {{$wali}}!</h3>
             <b>Selamat Pembayaran Kamu Telah Dikonfirmasi Oleh Pihak Sekolah!</b>
             <p>Terimakasih telah mempercayakan AKUNMTs untuk melakukan pembayaran sekolah secara online, Berikut detail dari transaksi yang telah kamu lakukan :</p>
         </div>
@@ -91,15 +91,11 @@
             @foreach ($riwayats as $riwayat)
             <tr>
                 <td>{{$riwayat->nama}}</td>
-                <td>{{$riwayat->nama_produk_pembayaran}}</td>
+                <td>{{$riwayat->nama_cicilan}}</td>
                 <td>{{$riwayat->status}}</td>
                 <td>{{number_format($riwayat->nominal,0,',','.')}}</td>
             </tr>
             @endforeach
-            <tr>
-                <td colspan="3" class="total">Total:</td>
-                <td>{{number_format($total,0,',','.')}}</td>
-            </tr>
         </table>
         <div class="contact" style="margin-top: 5px;">
             <p>Salam Hangat dari kami!</p>
