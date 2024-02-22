@@ -6,7 +6,9 @@ use App\Models\ProdukLangsung;
 use App\Models\Versi;
 use App\Models\Kakeibo;
 use App\Models\Guru;
+use App\Models\Pengeluaran;
 use App\Models\detail_pengeluaran;
+use App\Models\HubPengeluaran;
 
 use App\Charts\PendapatanHarian;
 use App\Charts\PengeluaranHarian;
@@ -330,6 +332,23 @@ class PengelolaanController extends Controller
             'gurus' => Guru::all(),
         ]);
     }
+    
+    public function pengaturanPengeluaran($id)
+    {
+        $colaborator = DB::table('hub_pengeluarans')
+                ->join('gurus', 'hub_pengeluarans.id_guru', '=', 'gurus.id')
+                ->select('gurus.nama', 'hub_pengeluarans.id as IdHub')
+                ->where('hub_pengeluarans.id_pengeluaran', $id)
+                ->get();
+        return view('admin.pengelolaan.pengeluaran.pengaturan', [
+            'title' => 'Pengeluaran',
+            'active' => 'pengeluaran',
+            'pengeluaran' => Pengeluaran::find($id),
+            'versis' => Versi::all(),
+            'colaborators' => $colaborator,
+            'gurus' => Guru::all()
+        ]);
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -357,7 +376,27 @@ class PengelolaanController extends Controller
             'created_at' => now(),
             'updated_at' => now(),
         ]);
+
+        $lastPengeluaran = Pengeluaran::max('id');
+
+        DB::table('hub_pengeluarans')->insertOrIgnore([
+            'id_pengeluaran' => $lastPengeluaran,
+            'id_guru' => auth('guru')->user()->id,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
         return redirect()->route('pengeluaran')->with('success', 'Kategori Pengeluaran Baru Telah Dibuat!');
+    }
+    
+    public function storeColabolator(Request $request)
+    {
+        DB::table('hub_pengeluarans')->insertOrIgnore([
+            'id_pengeluaran' => $request->idPengeluaran,
+            'id_guru' => $request->guru,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+        return redirect()->route('colabolator', ['id' => $request->idPengeluaran])->with('success', 'Colabolator Baru Telah dimasukan!');
     }
     
     public function storeDetailPengeluaran(Request $request)
@@ -438,6 +477,20 @@ class PengelolaanController extends Controller
         
     }
     
+    public function UpdatePengaturanPengeluaran(Request $request)
+    {
+        DB::table('pengeluarans')
+        ->where('id', $request->IdPengeluaran)
+        ->update([
+            'id_versi' => $request->versi,
+            'nama_pengeluaran' => $request->kategori,
+            'keterangan' => $request->keterangan,
+            'status' => $request->status,
+            'created_at' => now(),
+        ]);
+        return redirect()->route('detailpengeluaran', ['id' => $request->IdPengeluaran])->with('success', 'Data Telah Diperbaharui!');
+    }
+    
     public function UpdateDetailPengeluaran(Request $request)
     {
         $atasNama = $pemasukan = DB::table('gurus')
@@ -491,5 +544,11 @@ class PengelolaanController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+    
+    public function destroyColabolator($idColab, $idPengeluaran)
+    {
+        HubPengeluaran::destroy($idColab);
+        return redirect()->route('colabolator', ['id' => $idPengeluaran])->with('success', 'Data Telah Dihapus');
     }
 }

@@ -9,6 +9,7 @@ use App\Models\Orangtuawali;
 use App\Models\Keranjang;
 use App\Models\Pesanan;
 use App\Models\HubCicilan;
+use App\Models\Cicilan;
 
 use Dompdf\Dompdf;
 use Dompdf\Options;
@@ -157,8 +158,65 @@ class TransaksiLangsungController extends Controller
             'siswa' => $siswa,
             'cicilan' => $produkCicilan,
             'riwayats' => $riwayat,
-            'totalBayar' => $totalBayar
+            'totalBayar' => $totalBayar,
+            'idCheck' => $hubSiswa
         ]);
+    }
+    
+    public function invoiceCicilan($id)
+    {
+        $hubSiswa = HubCicilan::find($id);
+        $siswa = DB::table('siswas')
+                ->join('kelas', 'siswas.id_kelas', '=', 'kelas.id')
+                ->select('siswas.id', 'siswas.nama', 'kelas.nama_kelas', 'kelas.kelas_romawi_angka_abjad')
+                ->where('siswas.id', $hubSiswa->id_siswa)
+                ->first();
+        $produkCicilan = DB::table('hub_cicilans')
+                ->join('pembayaran_cicilans', 'hub_cicilans.id_produk_cicilan', '=', 'pembayaran_cicilans.id')
+                ->select('pembayaran_cicilans.id', 'pembayaran_cicilans.nama_cicilan', 'pembayaran_cicilans.nominal', 'pembayaran_cicilans.keterangan', 'pembayaran_cicilans.priode_awal', 'pembayaran_cicilans.priode_akhir', 'hub_cicilans.status', 'hub_cicilans.id_siswa', 'hub_cicilans.id as IdCicilan')
+                ->where('hub_cicilans.id_produk_cicilan', $hubSiswa->id_produk_cicilan)
+                ->where('hub_cicilans.id_siswa', $hubSiswa->id_siswa)
+                ->first();
+        $riwayat = DB::table('cicilans')
+                ->join('pembayaran_cicilans', 'cicilans.id_produk_cicilan', '=', 'pembayaran_cicilans.id')
+                ->select('cicilans.id', 'pembayaran_cicilans.nama_cicilan', 'cicilans.id_siswa', 'cicilans.nominal', 'cicilans.keterangan', 'cicilans.tanggal_bayar', 'cicilans.status')
+                ->where('cicilans.id_produk_cicilan', $hubSiswa->id_produk_cicilan)
+                ->where('cicilans.id_siswa', $hubSiswa->id_siswa)
+                ->get();
+        $totalBayar = DB::table('cicilans')
+                ->where('cicilans.id_produk_cicilan', $hubSiswa->id_produk_cicilan)
+                ->where('cicilans.id_siswa', $hubSiswa->id_siswa)
+                ->sum('nominal');
+
+        // Buat objek Dompdf baru
+        $dompdf = new Dompdf();
+
+        // Kemungkinan konfigurasi tambahan
+        $options = new Options();
+        $options->set('defaultPaperSize', 'A4'); // Atur ukuran kertas menjadi A4
+        $dompdf = new Dompdf($options);
+
+        // Render view menjadi HTML dengan data pengguna
+        $html = view('templateExport.invoiceCicilan', [
+            'siswa' => $siswa,
+            'cicilan' => $produkCicilan,
+            'riwayats' => $riwayat,
+            'totalBayar' => $totalBayar,
+            'idCheck' => $hubSiswa
+        ]);
+
+        // Muat HTML ke Dompdf
+        $dompdf->loadHtml($html);
+
+        // Render PDF
+        $dompdf->render();
+
+        // // Simpan PDF ke penyimpanan sementara
+        $namaFile = 'Invoice Cicilan - ' . time() . '.pdf'; // Nama file unik
+        Storage::put('public/struk/' . $namaFile, $dompdf->output());
+
+        // Logika bisnis atau operasi lainnya
+        return $dompdf->stream($namaFile);
     }
     
     public function indexCheckoutSiswa($id)
@@ -378,6 +436,12 @@ class TransaksiLangsungController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+    
+    public function destroyCicilan($idCicilan, $idSiswa)
+    {
+        Cicilan::destroy($idCicilan);
+        return redirect()->route('transaksi-siswa-cicilan', ['id' => $idSiswa])->with('success', 'Data Telah Dihapus');
     }
     
     public function destroyKeranjang(Request $request, $id)

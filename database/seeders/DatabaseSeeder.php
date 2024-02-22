@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Guru;
 use App\Models\Versi;
 use App\Models\Pengeluaran;
+use App\Models\HubPengeluaran;
 use App\Models\Kakeibo;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -53,6 +54,11 @@ class DatabaseSeeder extends Seeder
             'nama_pengeluaran' => 'Pengeluaran Umum Tahun Anggaran 2023/2024',
             'keterangan' => 'Pengeluaran Umum Tahun Anggaran 2023/2024, pengajuan selama tahun anggaran 2023/2024',
             'status' => 'Aktif',
+        ]);
+
+        HubPengeluaran::create([
+            'id_pengeluaran' => '1',
+            'id_guru' => '1',
         ]);
         
         Kakeibo::create([

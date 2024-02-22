@@ -7,6 +7,9 @@ use App\Models\Pesanan;
 use App\Models\BuktiPembayaranCicilan;
 use App\Models\Cicilan;
 
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -110,6 +113,8 @@ class TransaksiOnlineController extends Controller
             'riwayats' => $detail
         ]);
     }
+    
+
 
     /**
      * Show the form for creating a new resource.
@@ -162,7 +167,58 @@ class TransaksiOnlineController extends Controller
                 'status' => $request->status,
                 'updated_at' => now(),
             ]);
+
+            $riwayat = DB::table('detail_pesanans')
+                ->join('pesanans', 'detail_pesanans.id_pesanan', '=', 'pesanans.id')
+                ->join('produk_langsungs', 'detail_pesanans.id_produk_langsung', '=', 'produk_langsungs.id')
+                ->join('siswas', 'pesanans.id_siswa', '=', 'siswas.id')
+                ->join('orangtuawalis', 'siswas.id_ortu', '=', 'orangtuawalis.id')
+                ->where('pesanans.id', $request->idPesanan)
+                ->select('produk_langsungs.nama_produk_pembayaran', 'produk_langsungs.nominal', 'siswas.nama', 'orangtuawalis.nama AS wali', 'orangtuawalis.email', 'pesanans.status', 'pesanans.id as idPesanan')
+                ->get();
+            $bukti = Pembayaran::where('id_Pesanan', $request->idPesanan)->first();
+            $sumNominal = $riwayat->sum('nominal');
+            $emails = $riwayat->pluck('email');
+            $walis = $riwayat->pluck('wali');
+
+            $firstEmail = $emails->first();
+            $firstWali = $walis->first();
+
+            if ($firstEmail != null) {
+                $mail = new PHPMailer(true); // Passing `true` enables exceptions
+
+                try {
+                    // Server settings
+                    $mail->isSMTP(); // Send using SMTP
+                    $mail->Host       = env('MAIL_HOST');
+                    $mail->SMTPAuth   = true; // Enable SMTP authentication
+                    $mail->Username   = env('MAIL_USERNAME');
+                    $mail->Password   = env('MAIL_PASSWORD');
+                    $mail->SMTPSecure = env('MAIL_ENCRYPTION');
+                    $mail->Port       = env('MAIL_PORT');
+        
+                    // Recipients
+                    $mail->setFrom(env('MAIL_FROM_ADDRESS'), env('MAIL_FROM_NAME'));
+                    $mail->addAddress($firstEmail, $firstWali); // Add a recipient
+        
+                    // Content
+                    $mail->isHTML(true); // Set email format to HTML
+                    $mail->Subject = 'Pembayaran Cicilan';
+                    $mail->Body    = view('templateEmail.invoicePembayaran', [
+                                        'title' => 'Pembayaran Siswa',
+                                        'riwayats' => $riwayat,
+                                        'bukti' => $bukti,
+                                        'total' => $sumNominal
+                                    ]);
+        
+                    $mail->send();
+                    return redirect()->route('TransaksiOnline', ['status' => 'Telah Dibayarkan'])->with('success', 'Konfirmasi Selesai!');
+                } catch (Exception $e) {
+                    return "Email gagal dikirim. Pesan error: {$mail->ErrorInfo}";
+                }
+            }
             return redirect()->route('TransaksiOnline', ['status' => 'Telah Dibayarkan'])->with('success', 'Konfirmasi Selesai!');
+
         }
         
         if ($request->status == 'Tidak Sesuai') {

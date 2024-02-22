@@ -53,7 +53,7 @@
                 <tbody>
                     @forelse ($antrians as $antrian)
                         <tr>
-                            <td>{{$loop->ineration}}</td>
+                            <td>{{$loop->iteration}}</td>
                             <td>{{$antrian->nama}}</td>
                             <td>
                                 <a href="/detail-transaksi-online/{{$antrian->idPesanan}}" class="badge b-primary">Transaksi</a>
@@ -84,7 +84,7 @@
                 <tbody>
                     @forelse ($antrianCicilans as $antrianCicilan)
                         <tr>
-                            <td>{{$loop->ineration}}</td>
+                            <td>{{$loop->Iteration}}</td>
                             <td>{{$antrianCicilan->nama}}</td>
                             <td>
                                 <a href="/transaksi_cicilan_online/{{$antrianCicilan->IdCicilan}}" class="badge b-primary">Konfirmasi</a>

@@ -140,6 +140,7 @@ Route::get('/transaksi-cicilan', [TransaksiLangsungController::class, 'indexCici
 Route::get('/transaksi-cicilan-siswa/{id}', [TransaksiLangsungController::class, 'indexCicilanSiswa'])->name('transaksi-siswa-cicilan')->middleware('auth:guru');
 Route::get('/daftar-cicilan-siswa/{id}', [TransaksiLangsungController::class, 'indexCicilanDaftarSiswa'])->name('transaksi-siswa-cicilan')->middleware('auth:guru');
 Route::post('/c_cicilans', [TransaksiLangsungController::class, 'storeCicilan'])->middleware('auth:guru');
+Route::get('/h_cicilan_siswa/{idCicilan}/{idSiswa}', [TransaksiLangsungController::class, 'destroyCicilan'])->middleware('auth:guru');
 
 // transaksi online
 Route::get('/transaksi-onine/{status}', [TransaksiOnlineController::class, 'index'])->name('TransaksiOnline')->middleware('auth:guru');
@@ -182,6 +183,10 @@ Route::get('/detail_pengeluaran/{id}', [PengelolaanController::class, 'indexDeta
 Route::post('/c_pengeluaran_detail', [PengelolaanController::class, 'storeDetailPengeluaran'])->middleware('auth:guru');
 Route::get('/aksi_detail/{id}', [PengelolaanController::class, 'aksiDetailPengeluaran'])->middleware('auth:guru');
 Route::post('/u_detail_pengeluaran', [PengelolaanController::class, 'UpdateDetailPengeluaran'])->middleware('auth:guru');
+Route::get('/p_pengeluaran/{id}', [PengelolaanController::class, 'pengaturanPengeluaran'])->name('colabolator')->middleware('auth:guru');
+Route::post('/c_colabolator', [PengelolaanController::class, 'storeColabolator'])->middleware('auth:guru');
+Route::get('/d_colaborator/{idColab}/{idPengeluaran}', [PengelolaanController::class, 'destroyColabolator'])->middleware('auth:guru');
+Route::post('/u_pengaturan_pengeluaran', [PengelolaanController::class, 'UpdatePengaturanPengeluaran'])->middleware('auth:guru');
 
 // pengaturan
 
@@ -203,5 +208,13 @@ Route::post('/u_profile_admin', [PengaturanController::class, 'updateProfile'])-
 
 Route::get('/struk', [PengaturanController::class, 'struk'])->name('struk')->middleware('auth:guru');
 Route::get('/inovoice/{id}', [TransaksiLangsungController::class, 'invoice'])->name('invoice')->middleware('auth:guru');
+Route::get('/cetak_struk_cicilan/{id}', [TransaksiLangsungController::class, 'invoiceCicilan'])->name('invoice')->middleware('auth:guru');
 Route::get('/unduh_lap/{id}', [PengelolaanController::class, 'LapPengeluaran'])->middleware('auth:guru');
 Route::get('/unduh_lap_exel/{id}', [PengelolaanController::class, 'LapPengeluaranExcel'])->middleware('auth:guru');
+
+/*
+|--------------------------------------------------------------------------
+| template email
+|--------------------------------------------------------------------------
+*/
+Route::get('/invoicePembayaran', [TransaksiOnlineController::class, 'invoicePembayaran'])->middleware('auth:guru');
