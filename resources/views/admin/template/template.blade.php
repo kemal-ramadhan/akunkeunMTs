@@ -317,18 +317,48 @@
                             </div>
                         </li>
 
+                        @php
+                        // Import class DB
+                        use Illuminate\Support\Facades\DB;
+                            $sumantrianHead = DB::table('pesanans')
+                                ->where('pesanans.status', 'Menunggu Konfirmasi')
+                                ->count();
+                            $CountAntrianHead = DB::table('bukti_pembayaran_cicilans')
+                                ->where('bukti_pembayaran_cicilans.status', 'Menunggu Konfirmasi')
+                                ->count();
+                            $antriansHeads = DB::table('detail_pesanans')
+                                ->join('pesanans', 'detail_pesanans.id_pesanan', '=', 'pesanans.id')
+                                ->join('pembayarans', 'pembayarans.id_Pesanan', '=', 'pesanans.id')
+                                ->join('produk_langsungs', 'detail_pesanans.id_produk_langsung', '=', 'produk_langsungs.id')
+                                ->join('siswas', 'pesanans.id_siswa', '=', 'siswas.id')
+                                ->join('orangtuawalis', 'siswas.id_ortu', '=', 'orangtuawalis.id')
+                                ->where('pesanans.status', 'Menunggu Konfirmasi')
+                                ->select('produk_langsungs.nama_produk_pembayaran', 'produk_langsungs.nominal', 'siswas.nama', 'orangtuawalis.nama AS wali', 'pesanans.status', 'pembayarans.tanggal_bayar as tglBayar', 'pesanans.id as idPesanan')
+                                ->orderBy('tglBayar', 'desc') // Mengurutkan berdasarkan tanggal pembayaran terbaru
+                                ->take(4) // Mengambil 4 data teratas
+                                ->get();
+                            $antrianCicilanHeads = DB::table('cicilans')
+                                ->join('bukti_pembayaran_cicilans', 'bukti_pembayaran_cicilans.id_cicilan', '=', 'cicilans.id')
+                                ->join('siswas', 'cicilans.id_siswa', '=', 'siswas.id')
+                                ->where('bukti_pembayaran_cicilans.status', 'Menunggu Konfirmasi')
+                                ->select('cicilans.id as IdCicilan', 'siswas.nama', 'bukti_pembayaran_cicilans.tanggal_bayar', 'bukti_pembayaran_cicilans.status')
+                                ->orderBy('bukti_pembayaran_cicilans.tanggal_bayar', 'desc') // Mengurutkan berdasarkan tanggal pembayaran terbaru
+                                ->take(4) // Mengambil 4 data teratas
+                                ->get();
+                        @endphp
                         <!-- Nav Item - Alerts -->
                         <li class="nav-item dropdown no-arrow mx-1">
                             <a class="nav-link dropdown-toggle" id="notif-menu" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-bell fa-fw"></i>
                                 <!-- Counter - Alerts -->
-                                <span class="badge badge-danger badge-counter">3+</span>
+                                <span class="badge badge-danger badge-counter">{{$sumantrianHead}}+</span>
                             </a>
                             <!-- Dropdown - Alerts -->
                             <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="notif-menu">
                                 <h6 class="dropdown-header">
-                                    Alerts Center
+                                    Antrian Transaksi
                                 </h6>
+                                @forelse ($antriansHeads as $antriansHead)
                                 <a class="dropdown-item d-flex align-items-center" href="#">
                                     <div class="mr-3">
                                         <div class="icon-circle bg-primary">
@@ -336,33 +366,14 @@
                                         </div>
                                     </div>
                                     <div>
-                                        <div class="small text-gray-500">December 12, 2019</div>
-                                        <span class="font-weight-bold">A new monthly report is ready to download!</span>
+                                        <div class="small text-gray-500">{{$antriansHead->tglBayar}}</div>
+                                        <span class="font-weight-bold">{{$antriansHead->nama}}</span>
                                     </div>
                                 </a>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="mr-3">
-                                        <div class="icon-circle bg-success">
-                                            <i class="fas fa-donate text-white"></i>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="small text-gray-500">December 7, 2019</div>
-                                        $290.29 has been deposited into your account!
-                                    </div>
-                                </a>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="mr-3">
-                                        <div class="icon-circle bg-warning">
-                                            <i class="fas fa-exclamation-triangle text-white"></i>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="small text-gray-500">December 2, 2019</div>
-                                        Spending Alert: We've noticed unusually high spending for your account.
-                                    </div>
-                                </a>
-                                <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
+                                @empty
+                                    
+                                @endforelse
+                                <a class="dropdown-item text-center small text-gray-500" href="/transaksi-onine/{{$status = 'Menunggu Konfirmasi'}}">Lihat Semua Transaksi</a>
                             </div>
                         </li>
 
@@ -371,62 +382,25 @@
                             <a class="nav-link dropdown-toggle" id="message-menu" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-envelope fa-fw"></i>
                                 <!-- Counter - Messages -->
-                                <span class="badge badge-danger badge-counter">7</span>
+                                <span class="badge badge-danger badge-counter">{{$CountAntrianHead}}</span>
                             </a>
                             <!-- Dropdown - Messages -->
                             <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="message-menu">
                                 <h6 class="dropdown-header">
-                                    Message Center
+                                    Antrian Transaksi Cicilan
                                 </h6>
+                                @foreach ($antrianCicilanHeads as $antrianCicilanHead)
                                 <a class="dropdown-item d-flex align-items-center" href="#">
                                     <div class="dropdown-list-image mr-3">
-                                        <img class="rounded-circle" src="img/undraw_profile_1.svg"
-                                            alt="...">
-                                        <div class="status-indicator bg-success"></div>
+                                        <i class="fas fa-envelope fa-fw"></i>
                                     </div>
                                     <div class="font-weight-bold">
-                                        <div class="text-truncate">Hi there! I am wondering if you can help me with a
-                                            problem I've been having.</div>
-                                        <div class="small text-gray-500">Emily Fowler · 58m</div>
+                                        <div class="text-truncate">{{$antrianCicilanHead->nama}}</div>
+                                        <div class="small text-gray-500">{{$antrianCicilanHead->tanggal_bayar}}</div>
                                     </div>
                                 </a>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="dropdown-list-image mr-3">
-                                        <img class="rounded-circle" src="img/undraw_profile_2.svg"
-                                            alt="...">
-                                        <div class="status-indicator"></div>
-                                    </div>
-                                    <div>
-                                        <div class="text-truncate">I have the photos that you ordered last month, how
-                                            would you like them sent to you?</div>
-                                        <div class="small text-gray-500">Jae Chun · 1d</div>
-                                    </div>
-                                </a>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="dropdown-list-image mr-3">
-                                        <img class="rounded-circle" src="img/undraw_profile_3.svg"
-                                            alt="...">
-                                        <div class="status-indicator bg-warning"></div>
-                                    </div>
-                                    <div>
-                                        <div class="text-truncate">Last month's report looks great, I am very happy with
-                                            the progress so far, keep up the good work!</div>
-                                        <div class="small text-gray-500">Morgan Alvarez · 2d</div>
-                                    </div>
-                                </a>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="dropdown-list-image mr-3">
-                                        <img class="rounded-circle" src="https://source.unsplash.com/Mv9hjnEUHR4/60x60"
-                                            alt="...">
-                                        <div class="status-indicator bg-success"></div>
-                                    </div>
-                                    <div>
-                                        <div class="text-truncate">Am I a good boy? The reason I ask is because someone
-                                            told me that people say this to all dogs, even if they aren't good...</div>
-                                        <div class="small text-gray-500">Chicken the Dog · 2w</div>
-                                    </div>
-                                </a>
-                                <a class="dropdown-item text-center small text-gray-500" href="#">Read More Messages</a>
+                                @endforeach
+                                <a class="dropdown-item text-center small text-gray-500" href="/transaksi-cicilan-online/{{$status = 'Menunggu Konfirmasi'}}">Lihat Semua Transaksi</a>
                             </div>
                         </li>
 

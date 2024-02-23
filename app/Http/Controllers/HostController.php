@@ -11,6 +11,7 @@ use App\Models\ProdukLangsung;
 use App\Models\Keranjang;
 use App\Models\Pesanan;
 use App\Models\Cicilan;
+use App\Models\Orangtuawali;
 
 use Illuminate\Support\Facades\Storage;
 
@@ -255,9 +256,17 @@ class HostController extends Controller
     
     public function profile()
     {
+        $idOrtu = auth('wali')->user()->id;
+        $siswas = DB::table('siswas')
+                ->join('kelas', 'siswas.id_kelas', '=', 'kelas.id')
+                ->select('siswas.nama', 'kelas.nama_kelas', 'kelas.kelas_romawi_angka_abjad')
+                ->where('siswas.id_ortu', $idOrtu)
+                ->get();
         return view('public.profile', [
             'title' => 'Profile Saya',
             'active' => 'profile',
+            'biodata' => Orangtuawali::find(auth('wali')->user()->id),
+            'siswas' => $siswas
         ]);
     }
 

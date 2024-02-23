@@ -73,7 +73,7 @@
                 <td>: {{$bukti->atas_nama}}</td>
             </tr>
             <tr>
-                <td>Vis Transfer</td>
+                <td>Via Transfer</td>
                 <td>: {{$bukti->bank}}</td>
             </tr>
             <tr>
