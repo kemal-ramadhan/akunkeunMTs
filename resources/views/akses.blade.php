@@ -51,8 +51,8 @@
                       <form action="" method="">
                         @csrf
                         <div class="mb-3">
-                            <label for="exampleFormControlInput1" class="form-label bold-text">Email</label>
-                            <input type="email" class="form-control" id="exampleFormControlInput1" name="email" placeholder="name@example.com">
+                            <label for="exampleFormControlInput1" class="form-label bold-text">Username</label>
+                            <input type="text" class="form-control" id="exampleFormControlInput1" name="username" placeholder="Username ...">
                         </div>
                         <div class="mb-3">
                             <label for="password" class="form-label bold-text">Password</label>

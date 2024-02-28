@@ -33,6 +33,7 @@
               <option value="Guru">Guru</option>
               <option value="Bagian Keuangan">Bagian Keuangan</option>
               <option value="Kepala Madrasah">Kepala Madrasah</option>
+              <option value="Super Admin">Super Admin</option>
             </select>
         </div>
         <div class="col-sm-6 mb-3">

@@ -30,7 +30,7 @@ class HostController extends Controller
     public function authenticate(Request $request)
     {
         $credit = $request->validate([
-            'email' => ['required', 'email'],
+            'username' => ['required'],
             'password' => ['required'],
         ]);
  
@@ -382,7 +382,7 @@ class HostController extends Controller
         $lastCicilan = Cicilan::max('id');
 
         DB::table('bukti_pembayaran_cicilans')->insertOrIgnore([
-            'id_cicilan' => $request->idProdukCicilan,
+            'id_cicilan' => $lastCicilan,
             'atas_nama' => $request->nama_pengirim,
             'bank' => $request->bank,
             'nominal' => $request->nominal,
@@ -419,6 +419,23 @@ class HostController extends Controller
     public function update(Request $request, string $id)
     {
         //
+    }
+    
+    public function updateProfilePublic(Request $request)
+    {
+        DB::table('orangtuawalis')
+        ->where('id', $request->idMy)
+        ->update([
+            'nama' => $request->nama,
+            'username' => $request->username,
+            'email' => $request->email,
+            'no_telepon' => $request->notlp,
+            'alamat' => $request->alamat,
+            'updated_at' => now(),
+        ]);
+
+        return redirect()->route('profile')->with('success', 'Data Telah Diperbaharui!');
+
     }
 
     /**

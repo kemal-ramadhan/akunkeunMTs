@@ -30,15 +30,6 @@
                         <input type="text" class="form-control" id="exampleFormControlInput1" name="nama" value="{{$guru->nama}}">
                     </div>
                     <div class="col-sm-6 mb-3">
-                            <label for="jabatan" class="form-label">Jabatan</label>
-                            <select class="form-select" aria-label="Default select example" name="jabatan">
-                              <option value="{{$guru->jabatan}}" selected>{{$guru->jabatan}}</option>
-                              <option value="Guru">Guru</option>
-                              <option value="Bagian Keuangan">Bagian Keuangan</option>
-                              <option value="Kepala Madrasah">Kepala Madrasah</option>
-                            </select>
-                    </div>
-                    <div class="col-sm-6 mb-3">
                         <label for="">Tempat Lahir</label>
                         <input type="text" class="form-control" id="exampleFormControlInput1" name="tempat" value="{{$guru->tempat_lahir}}">
                     </div>

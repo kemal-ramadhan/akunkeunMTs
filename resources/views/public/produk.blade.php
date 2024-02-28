@@ -2,7 +2,7 @@
 
 @section('contain')
 <div class="top-space">
-    <div class="container mt-5">
+    {{-- <div class="container mt-5">
         <div class="card col-sm-9 mx-auto shadow-sm" style="border: none">
             <div class="card-body">
                 <div class="input-group input-group-lg mb-3">
@@ -12,12 +12,12 @@
 
             </div>
         </div>           
-    </div>
+    </div> --}}
 
 
     {{-- categori 1 --}}
     <div class="container mt-5">
-        <span class="badge b-primary mb-3">Pembayaran Bulanan</span>
+        <span class="badge b-primary mt-5 mb-3">Rangkaian Pembayaran Siswa</span>
         <h4 class="bold-text">Pembayaran Siswa</h4>
         <div class="row mt-5 mb-3">
             @forelse ($produks as $produk)
@@ -76,7 +76,7 @@
 
     {{-- categori 2 --}}
     <div class="container mt-5">
-        <span class="badge b-primary mb-3">Rangkaian Ujian</span>
+        <span class="badge b-primary mb-3">Cicilan Pembayaran Siswa</span>
         <h4 class="bold-text">Cicilan Pembayaran</h4>
         <div class="row mt-5 mb-3">
             @forelse ($cicilans as $cicilan)

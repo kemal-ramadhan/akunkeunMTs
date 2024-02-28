@@ -55,8 +55,9 @@
             </li>
 
             <!-- Divider -->
+            
+            @if ((auth('guru')->user()->jabatan == "Super Admin") || (auth('guru')->user()->jabatan == "Bagian Keuangan"))
             <hr class="sidebar-divider">
-
             <!-- Heading Data Referensi-->
             <div class="sidebar-heading">
                 Data Referensi
@@ -149,7 +150,7 @@
                     </div>
                 </div>
             </li>
-
+            @endif
             <!-- Divider -->
             <hr class="sidebar-divider">
 
@@ -186,8 +187,12 @@
                 <div id="pengajuanLangsung" class="collapse"  aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
                     <div class="b-grey py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Data Penunjang</h6>
+                        @if ((auth('guru')->user()->jabatan == "Super Admin") || (auth('guru')->user()->jabatan == "Bagian Keuangan"))
                         <a class="collapse-item" href="/daftar-pengajuan-keuangan/{{$status = 'Pengajuan'}}">Bagian Keuangan</a>
+                        @endif
+                        @if ((auth('guru')->user()->jabatan == "Super Admin") || (auth('guru')->user()->jabatan == "Kepala Madrasah"))
                         <a class="collapse-item" href="/daftar-pengajuan-kamad/{{$status = 'Pengajuan'}}">Kepala Madrasah</a>
+                        @endif
                     </div>
                 </div>
             </li>
@@ -200,6 +205,7 @@
                 Pengelolaan Keuangan
             </div>
 
+            @if ((auth('guru')->user()->jabatan == "Super Admin") || (auth('guru')->user()->jabatan == "Kepala Madrasah") || (auth('guru')->user()->jabatan == "Bagian Keuangan"))
             <li class="nav-item">
                 <a class="nav-link {{ $active == 'pemasukan' ? 'b-primary' : 'color-primary-blur'}}" href="/pemasukan">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-wallet2" viewBox="0 0 16 16">
@@ -207,7 +213,7 @@
                       </svg>
                     <span class="ml-2">Pemasukan</span></a>
             </li>
-            
+            @endif
             <li class="nav-item">
                 <a class="nav-link {{ $active == 'pengeluaran' ? 'b-primary' : 'color-primary-blur'}}" href="/pengeluaran">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart-check" viewBox="0 0 16 16">
@@ -234,6 +240,7 @@
                     <span class="ml-2">Pengaturan Akun</span></a>
             </li>
             
+            @if (auth('guru')->user()->jabatan == "Super Admin")
             <li class="nav-item">
                 <a class="nav-link {{ $active == 'versi' ? 'b-primary' : 'color-primary-blur'}}" href="/versi">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-terminal-plus" viewBox="0 0 16 16">
@@ -242,7 +249,7 @@
                       </svg>
                     <span class="ml-2">Pengaturan Versi</span></a>
             </li>
-
+            @endif
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
 

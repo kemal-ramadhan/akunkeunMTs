@@ -28,7 +28,7 @@ class DatabaseSeeder extends Seeder
         Guru::create([
             'nuptk' => '3204320712000008',
             'nama' => 'Kemal Ramadhan',
-            'jabatan' => 'Bagian Keuangan',
+            'jabatan' => 'Super Admin',
             'tanggal_lahir' => now(),
             'tempat_lahir' => 'Bandung',
             'email' => 'km.kemal03@gmail.com',

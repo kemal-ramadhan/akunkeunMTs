@@ -174,7 +174,9 @@ class PengelolaanController extends Controller
     {
         $pengeluarans = DB::table('pengeluarans')
                 ->join('versis', 'pengeluarans.id_versi', '=', 'versis.id')
-                ->select('pengeluarans.id', 'pengeluarans.nama_pengeluaran', 'pengeluarans.keterangan', 'versis.nama_versi', 'pengeluarans.status')
+                ->join('hub_pengeluarans', 'pengeluarans.id', '=', 'hub_pengeluarans.id_pengeluaran')
+                ->select('pengeluarans.id', 'pengeluarans.nama_pengeluaran', 'pengeluarans.keterangan', 'versis.nama_versi', 'pengeluarans.status', 'hub_pengeluarans.id_guru')
+                ->where('hub_pengeluarans.id_guru', auth('guru')->user()->id)
                 ->get();
         return view('admin.pengelolaan.pengeluaran.index', [
             'title' => 'Pengeluaran',

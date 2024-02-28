@@ -53,6 +53,7 @@ Route::post('/c_keranjang_public', [HostController::class, 'storeKeranjang']);
 Route::post('/c_pesanan_public', [HostController::class, 'storePesanan']);
 Route::post('/c_pembayaran', [HostController::class, 'storePembayaranPublic']);
 Route::post('/c_pembayaran_cicilan_public', [HostController::class, 'storePembayaranCicilanPublic']);
+Route::post('/u_profile_public', [HostController::class, 'updateProfilePublic']);
 
 // delete
 Route::get('/h_keranjang_public/{id}', [HostController::class, 'destroyKeranjang']);

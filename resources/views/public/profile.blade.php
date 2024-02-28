@@ -25,32 +25,39 @@
             </div>
             <div class="col-sm-9">
                 <div class="card">
+                    <form action="/u_profile_public" method="post">
+                        @csrf
+                        <input type="hidden" name="idMy" value="{{$biodata->id}}">
                     <div class="card-body">
                         <h5 class="bold-text">Biodata</h5>
                         <hr>
                         <div class="row">
                             <div class="col-sm-6 mb-3">
-                                <label for="exampleFormControlInput1" class="form-label">Nama</label>
-                                <input type="text" class="form-control" id="exampleFormControlInput1" value="{{$biodata->nama}}" name="nama">
+                                <label for="nama" class="form-label">Nama</label>
+                                <input type="text" class="form-control" id="nama" value="{{$biodata->nama}}" name="nama">
                             </div>
                             <div class="col-sm-6 mb-3">
-                                <label for="exampleFormControlInput1" class="form-label">Email</label>
-                                <input type="email" class="form-control" id="exampleFormControlInput1" value="{{$biodata->email}}" name="email">
+                                <label for="username" class="form-label">Username</label>
+                                <input type="text" class="form-control" id="username" value="{{$biodata->username}}" name="username">
                             </div>
                             <div class="col-sm-6 mb-3">
-                                <label for="exampleFormControlInput1" class="form-label">No Telepon</label>
-                                <input type="text" class="form-control" id="exampleFormControlInput1" value="{{$biodata->no_telepon}}" name="notlp">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="email" value="{{$biodata->email}}" name="email">
                             </div>
                             <div class="col-sm-6 mb-3">
-                                <label for="exampleFormControlInput1" class="form-label">Password Baru</label>
-                                <input type="password" class="form-control" id="exampleFormControlInput1" name="password">
+                                <label for="telp" class="form-label">No Telepon</label>
+                                <input type="text" class="form-control" id="telp" value="{{$biodata->no_telepon}}" name="notlp">
                             </div>
                             <div class="mb-3">
-                                <label for="exampleFormControlTextarea1" class="form-label">Alamat</label>
-                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="alamat">{{$biodata->alamat}}</textarea>
+                                <label for="alamat" class="form-label">Alamat</label>
+                                <textarea class="form-control" id="alamat" rows="3" name="alamat">{{$biodata->alamat}}</textarea>
                             </div>
                         </div>
+                        <div class="mb-3 text-center">
+                            <button type="submit" class="btn b-primary">Perbaharui Data</button>
+                        </div>
                     </div>
+                    </form>
                 </div>
                 <div class="card mt-3">
                     <div class="card-body">

@@ -111,6 +111,26 @@ class PengaturanController extends Controller
             'created_at' => now(),
             'updated_at' => now(),
         ]);
+
+        $lastversi = Versi::max('id');
+
+        DB::table('pengeluarans')->insertOrIgnore([
+            'id_versi' => $lastversi,
+            'nama_pengeluaran' => 'Pengeluaran Umum' . $request->versi,
+            'keterangan' => 'Pengeluaran Umum' . $request->versi,
+            'status' => 'Tidak Aktif',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        $lastPengeluaran = Versi::max('id');
+        
+        DB::table('hub_pengeluarans')->insertOrIgnore([
+            'id_pengeluaran' => $lastPengeluaran,
+            'id_guru' => auth('guru')->user()->id,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
         return redirect()->route('versi')->with('success', 'Data Versi Baru Telah Ditambahkan!');
     }
 
