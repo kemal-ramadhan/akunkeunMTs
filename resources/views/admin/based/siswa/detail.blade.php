@@ -35,8 +35,13 @@
           <label for="kelas" class="form-label">Kelas</label>
           <select class="form-select" aria-label="Default select example" name="kelas">
             @foreach ($kelass as $kelas)
-            @if ($siswa[0]->IdKelas == $kelas->id)
-            <option value="{{$kelas->id}}" selected>{{$kelas->kelas_romawi_angka_abjad}} - {{$kelas->nama_kelas}}</option>
+            @if ($kelasselect != null)
+              @if ($kelasselect->id_kelas == $kelas->id)
+              <option value="{{$kelas->id}}" selected>{{$kelas->kelas_romawi_angka_abjad}} - {{$kelas->nama_kelas}}</option>
+              @endif
+            @endif
+            @if ($kelasselect == null)
+              <option selected>-- Pilih Kelas --</option>
             @endif
             <option value="{{$kelas->id}}">{{$kelas->kelas_romawi_angka_abjad}} - {{$kelas->nama_kelas}}</option>
             @endforeach
@@ -98,14 +103,79 @@
     </form>
 </div>
 
+{{-- riwayat kelas --}}
+<div class="card shadow mb-4">
+  <div class="card-body">
+    <h5>Riwayat Kelas</h5>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Nama Wali Kelas</th>
+          <th scope="col">Kelas</th>
+          <th scope="col">Versi</th>
+        </tr>
+      </thead>
+      <tbody>
+        @foreach ($riwayatkelass as $riwayatkelas)
+        <tr>
+          <th scope="row">{{$loop->iteration}}</th>
+          <td>{{$riwayatkelas->nama}}</td>
+          <td>{{$riwayatkelas->kelas_romawi_angka_abjad}} - {{$riwayatkelas->nama_kelas}}</td>
+          <td>{{$riwayatkelas->nama_versi}}</td>
+        </tr>
+        @endforeach
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{{-- riwayat kelas --}}
+<div class="card shadow mb-4">
+  <div class="card-body">
+    <h5>Tagihan Siswa</h5>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Nama Pembayaran</th>
+          <th scope="col">Nominal</th>
+          <th scope="col">Status</th>
+          <th scope="col">Aksi</th>
+        </tr>
+      </thead>
+      <tbody>
+        @foreach ($tagihans as $tagihan)
+        @php
+          $adaPasanganSama = false; // Variabel penanda
+        @endphp
+          @foreach ($riwayats as $riwayat)
+            @if ($riwayat->id_produk_langsung == $tagihan->IdProdukLangsung)
+              @php
+                $adaPasanganSama = true; // Ada pasangan yang sama
+              @endphp
+            @endif
+          @endforeach
+          @if (!$adaPasanganSama)
+          <tr>
+            <td>{{$tagihan->nama_produk_pembayaran}}</td>
+            <td>{{$tagihan->nominal}}</td>
+            <td><span class="badge b-red">Belum Dibayarkan</span></td>
+            <td>
+              <a href="/transaksi-siswa/{{$tagihan->IdSiswa}}" class="badge b-primary">Bayarkan</a></td>
+          </tr>
+          @endif
+        @endforeach
+      </tbody>
+    </table>
+  </div>
+</div>
+
+
 <!-- DataTales Example -->
 <div class="card shadow mb-4">
   <div class="card-body">
       <div class="d-flex justify-content-between mb-3 mt-3">
           <h5>Riwayat Pembayaran Siswa</h5>
-          <button type="button" class="btn b-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-              + Tambah Data Baru
-          </button>
       </div>
       <div class="table-responsive">
           <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
@@ -141,5 +211,6 @@
       </div>
   </div>
 </div>
+
 
 @endsection

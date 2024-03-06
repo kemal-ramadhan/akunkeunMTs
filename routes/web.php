@@ -44,7 +44,8 @@ Route::get('/riwayat/{status}', [HostController::class, 'indexRiwayat'])->name('
 Route::get('/cicilans', [HostController::class, 'indexCicilan'])->middleware('auth:wali');
 Route::get('/detailCicilanPublic/{idcicilan}/{idSiswa}', [HostController::class, 'indexDetailCicilan'])->name('detailCicilanPublic')->middleware('auth:wali');
 Route::get('/PembayaranCicilanPublic/{idcicilan}/{idSiswa}', [HostController::class, 'indexPembayaranCicilan'])->name('PembayaranCicilanPublic')->middleware('auth:wali');
-Route::get('/profile', [HostController::class, 'profile'])->name('profile')->middleware('guest');
+Route::get('/profile', [HostController::class, 'profile'])->name('profile')->middleware('auth:wali');
+Route::get('/new_password', [HostController::class, 'new_password'])->name('newPassword')->middleware('auth:wali');
 
 // post
 Route::post('/akses_public', [HostController::class, 'authenticate']);
@@ -54,6 +55,7 @@ Route::post('/c_pesanan_public', [HostController::class, 'storePesanan']);
 Route::post('/c_pembayaran', [HostController::class, 'storePembayaranPublic']);
 Route::post('/c_pembayaran_cicilan_public', [HostController::class, 'storePembayaranCicilanPublic']);
 Route::post('/u_profile_public', [HostController::class, 'updateProfilePublic']);
+Route::post('/new_password', [HostController::class, 'updateNewPassword']);
 
 // delete
 Route::get('/h_keranjang_public/{id}', [HostController::class, 'destroyKeranjang']);
@@ -209,7 +211,7 @@ Route::post('/u_profile_admin', [PengaturanController::class, 'updateProfile'])-
 
 Route::get('/struk', [PengaturanController::class, 'struk'])->name('struk')->middleware('auth:guru');
 Route::get('/inovoice/{id}', [TransaksiLangsungController::class, 'invoice'])->name('invoice')->middleware('auth:guru');
-Route::get('/cetak_struk_cicilan/{id}', [TransaksiLangsungController::class, 'invoiceCicilan'])->name('invoice')->middleware('auth:guru');
+Route::get('/cetak_struk_cicilan/{id}', [TransaksiLangsungController::class, 'invoiceCicilan'])->name('invoiceCicilan')->middleware('auth:guru');
 Route::get('/unduh_lap/{id}', [PengelolaanController::class, 'LapPengeluaran'])->middleware('auth:guru');
 Route::get('/unduh_lap_exel/{id}', [PengelolaanController::class, 'LapPengeluaranExcel'])->middleware('auth:guru');
 

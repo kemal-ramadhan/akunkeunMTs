@@ -54,7 +54,6 @@
                                 <th>Nominal</th>
                                 <th>Tanggal</th>
                                 <th>Status</th>
-                                <th>Aksi</th>
                             </tr>
                         </thead>
                         <tfoot>
@@ -65,7 +64,6 @@
                                 <th>Nominal</th>
                                 <th>Tanggal</th>
                                 <th>Status</th>
-                                <th>Aksi</th>
                             </tr>
                         </tfoot>
                         <tbody>
@@ -77,9 +75,6 @@
                                     <td>{{number_format($riwayat->nominal,0,',','.')}}</td>
                                     <td>{{$riwayat->tanggal_bayar}}</td>
                                     <td>{{$riwayat->status}}</td>
-                                    <td>
-                                        <a href="" class="badge b-primary">Detail</a>
-                                    </td>
                                 </tr>
                             @empty
                                 

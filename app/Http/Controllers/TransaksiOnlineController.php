@@ -240,11 +240,65 @@ class TransaksiOnlineController extends Controller
         }
         
         if ($request->status == 'Tidak Sesuai') {
-            Pesanan::destroy($request->$idPesanan);
-            DB::table('pembayarans')
-                ->where('id_Pesanan', $request->$idPesanan)
-                ->delete();
-            return redirect()->route('TransaksiOnline', ['status' => 'Menunggu Konfirmasi'])->with('success', 'Data Telah dihapus, hubungi orang tua atau wali siswa untuk memberitahukan masalah tersebut!');
+            $riwayat = DB::table('detail_pesanans')
+                ->join('pesanans', 'detail_pesanans.id_pesanan', '=', 'pesanans.id')
+                ->join('produk_langsungs', 'detail_pesanans.id_produk_langsung', '=', 'produk_langsungs.id')
+                ->join('siswas', 'pesanans.id_siswa', '=', 'siswas.id')
+                ->join('orangtuawalis', 'siswas.id_ortu', '=', 'orangtuawalis.id')
+                ->where('pesanans.id', $request->idPesanan)
+                ->select('produk_langsungs.nama_produk_pembayaran', 'produk_langsungs.nominal', 'siswas.nama', 'orangtuawalis.nama AS wali', 'orangtuawalis.email', 'pesanans.status', 'pesanans.id as idPesanan')
+                ->get();
+            $emails = $riwayat->pluck('email');
+            $walis = $riwayat->pluck('wali');
+
+            $firstEmail = $emails->first();
+            $firstWali = $walis->first();
+
+            if ($firstEmail != null) {
+                $mail = new PHPMailer(true); // Passing `true` enables exceptions
+
+                try {
+                    // Server settings
+                    $mail->isSMTP(); // Send using SMTP
+                    $mail->Host       = env('MAIL_HOST');
+                    $mail->SMTPAuth   = true; // Enable SMTP authentication
+                    $mail->Username   = env('MAIL_USERNAME');
+                    $mail->Password   = env('MAIL_PASSWORD');
+                    $mail->SMTPSecure = env('MAIL_ENCRYPTION');
+                    $mail->Port       = env('MAIL_PORT');
+        
+                    // Recipients
+                    $mail->setFrom(env('MAIL_FROM_ADDRESS'), env('MAIL_FROM_NAME'));
+                    $mail->addAddress($firstEmail, $firstWali); // Add a recipient
+        
+                    // Content
+                    $mail->isHTML(true); // Set email format to HTML
+                    $mail->Subject = 'Gagal Pembayaran';
+                    $mail->Body    = view('templateEmail.gagal', [
+                                        'title' => 'Gagal Pembayaran Siswa',
+                                        'wali' => $firstWali
+                                    ]);
+        
+                    $mail->send();
+                    Pesanan::destroy($request->idPesanan);
+                    DB::table('pembayarans')
+                        ->where('id_Pesanan', $request->idPesanan)
+                        ->delete();
+                    DB::table('detail_pesanans')
+                        ->where('id_Pesanan', $request->idPesanan)
+                        ->delete();
+                    return redirect()->route('TransaksiOnline', ['status' => 'Menunggu Konfirmasi'])->with('success', 'Data Telah dihapus, hubungi orang tua atau wali siswa untuk memberitahukan masalah tersebut!');
+                } catch (Exception $e) {
+                    Pesanan::destroy($request->idPesanan);
+                    DB::table('pembayarans')
+                        ->where('id_Pesanan', $request->idPesanan)
+                        ->delete();
+                    DB::table('detail_pesanans')
+                        ->where('id_Pesanan', $request->idPesanan)
+                        ->delete();
+                    return "Email gagal dikirim. Pesan error: {$mail->ErrorInfo}";
+                }
+            }
         }
     }
     
@@ -315,11 +369,62 @@ class TransaksiOnlineController extends Controller
         }
         
         if ($request->status == 'Tidak Sesuai') {
-            Cicilan::destroy($request->$IdCicilan);
-            DB::table('bukti_pembayaran_cicilans')
-                ->where('id_cicilan', $request->$IdCicilan)
-                ->delete();
-            return redirect()->route('TransaksiCicilanOnline', ['status' => 'Menunggu Konfirmasi'])->with('success', 'Data Telah dihapus, hubungi orang tua atau wali siswa untuk memberitahukan masalah tersebut!');
+            
+                $detail = DB::table('cicilans')
+                    ->join('bukti_pembayaran_cicilans', 'bukti_pembayaran_cicilans.id_cicilan', '=', 'cicilans.id')
+                    ->join('siswas', 'cicilans.id_siswa', '=', 'siswas.id')
+                    ->join('pembayaran_cicilans', 'cicilans.id_produk_cicilan', '=', 'pembayaran_cicilans.id')
+                    ->join('orangtuawalis', 'siswas.id_ortu', '=', 'orangtuawalis.id')
+                    ->where('cicilans.id', $request->IdCicilan)
+                    ->select('cicilans.id as IdCicilan', 'pembayaran_cicilans.nama_cicilan', 'siswas.nama', 'bukti_pembayaran_cicilans.tanggal_bayar', 'bukti_pembayaran_cicilans.nominal', 'bukti_pembayaran_cicilans.status', 'orangtuawalis.nama AS wali',
+                    'orangtuawalis.email')
+                    ->get();
+                $bukti = BuktiPembayaranCicilan::where('id_cicilan', $request->IdCicilan)->first();
+                $emails = $detail->pluck('email');
+                $walis = $detail->pluck('wali');
+                $firstEmail = $emails->first();
+                $firstWali = $walis->first();
+    
+                $mail = new PHPMailer(true); // Passing `true` enables exceptions
+    
+                    try {
+                        // Server settings
+                        $mail->isSMTP(); // Send using SMTP
+                        $mail->Host       = env('MAIL_HOST');
+                        $mail->SMTPAuth   = true; // Enable SMTP authentication
+                        $mail->Username   = env('MAIL_USERNAME');
+                        $mail->Password   = env('MAIL_PASSWORD');
+                        $mail->SMTPSecure = env('MAIL_ENCRYPTION');
+                        $mail->Port       = env('MAIL_PORT');
+            
+                        // Recipients
+                        $mail->setFrom(env('MAIL_FROM_ADDRESS'), env('MAIL_FROM_NAME'));
+                        $mail->addAddress($firstEmail, $firstWali); // Add a recipient
+            
+                        // Content
+                        $mail->isHTML(true); // Set email format to HTML
+                        $mail->Subject = 'Gagal Pembayaran';
+                        $mail->Body    = view('templateEmail.gagal', [
+                            'title' => 'Pembayaran Siswa',
+                            'wali' => $firstWali
+                        ]);
+            
+                        $mail->send();
+
+                        Cicilan::destroy($request->IdCicilan);
+                        DB::table('bukti_pembayaran_cicilans')
+                            ->where('id_cicilan', $request->IdCicilan)
+                            ->delete();
+
+                        return redirect()->route('TransaksiCicilanOnline', ['status' => 'Menunggu Konfirmasi'])->with('success', 'Data Telah dihapus, hubungi orang tua atau wali siswa untuk memberitahukan masalah tersebut!');
+                    } catch (Exception $e) {
+                        Cicilan::destroy($request->IdCicilan);
+                        DB::table('bukti_pembayaran_cicilans')
+                            ->where('id_cicilan', $request->IdCicilan)
+                            ->delete();
+                        return "Email gagal dikirim. Pesan error: {$mail->ErrorInfo}";
+                    }
+            
         }
     }
 

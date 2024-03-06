@@ -17,6 +17,7 @@
                 <div class="space-text-30">
                     <a class="nav-link" href="/produk-pembayaran">Akun Saya</a>
                     <a class="nav-link" href="/produk-pembayaran">Siswa / Anak Saya</a>
+                    <a class="nav-link" href="/new_password">Ubah Password</a>
                     <a class="nav-link" data-bs-toggle="modal" data-bs-target="#logout">
                         <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                         Akses Keluar

@@ -44,7 +44,7 @@ class PengelolaanController extends Controller
         return view('admin.pengelolaan.pemasukan.index', [
             'title' => 'Data Pemasukan',
             'active' => 'pemasukan',
-            'pembayarans' => ProdukLangsung::all(),
+            'pembayarans' => ProdukLangsung::where('versi', session('versi'))->get(),
             'pemasukans' => $pemasukan,
             'chart' => $chart->build()
         ]);

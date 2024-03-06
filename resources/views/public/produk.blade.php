@@ -34,7 +34,7 @@
                         <div class="card">
                             <div class="card-body">
                             <h5 class="card-title bold-text mb-3">{{$produk->nama_produk_pembayaran}}</h5>
-                            <h6>Kelas : VII/7</h6>
+                            <h6>Kelas : {{$produk->kelas_romawi_angka_abjad}} - {{$produk->nama_kelas}}</h6>
                             <h6>Atas Nama : <span class="badge b-primary">{{$produk->nama}}</span></h6>
                             <p class="card-text mb-3">{{$produk->keterangan}}</p>
                             <div class="d-flex justify-content-between align-items-center">
@@ -53,7 +53,7 @@
                 <div class="card">
                     <div class="card-body">
                       <h5 class="card-title bold-text mb-3">{{$produk->nama_produk_pembayaran}}</h5>
-                      <h6>Kelas : VII/7</h6>
+                      <h6>Kelas : {{$produk->kelas_romawi_angka_abjad}} - {{$produk->nama_kelas}}</h6>
                       <h6>Atas Nama : <span class="badge b-primary">{{$produk->nama}}</span></h6>
                       <p class="card-text mb-3">{{$produk->keterangan}}</p>
                       <div class="d-flex justify-content-between align-items-center">

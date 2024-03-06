@@ -27,8 +27,6 @@
                       <th>No</th>
                       <th>NISN/NIS</th>
                       <th>Nama Lengkap</th>
-                      <th>Nama Orang tua</th>
-                      <th>Kelas</th>
                       <th>Tempat Lahir</th>
                       <th>Tanggal Lahir</th>
                       <th>No Telephone</th>
@@ -44,8 +42,6 @@
                     <th>No</th>
                     <th>NISN/NIS</th>
                     <th>Nama Lengkap</th>
-                    <th>Nama Orang tua</th>
-                    <th>Kelas</th>
                     <th>Tempat Lahir</th>
                     <th>Tanggal Lahir</th>
                     <th>No Telephone</th>
@@ -61,9 +57,7 @@
                     <tr>
                       <td>{{$loop->iteration}}</td>
                       <td>{{$siswa->nisn}}/{{$siswa->nis}}</td>
-                      <td>{{$siswa->namaSiswa}}</td>
                       <td>{{$siswa->nama}}</td>
-                      <td>{{$siswa->kelas_romawi_angka_abjad}} - {{$siswa->nama_kelas}}</td>
                       <td>{{$siswa->tempat_lahir}}</td>
                       <td>{{$siswa->tanggal_lahir}}</td>
                       <td>{{$siswa->no_telepon}}</td>

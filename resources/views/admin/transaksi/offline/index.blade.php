@@ -62,7 +62,11 @@
                       <td>{{$siswa->nisn}}/{{$siswa->nis}}</td>
                       <td>{{$siswa->namaSiswa}}</td>
                       <td>{{$siswa->nama}}</td>
-                      <td>{{$siswa->kelas_romawi_angka_abjad}} - {{$siswa->nama_kelas}}</td>
+                      @foreach ($selectkelas as $kelas)
+                          @if ($kelas->id_siswa == $siswa->id)
+                          <td>{{$kelas->kelas_romawi_angka_abjad}} - {{$kelas->nama_kelas}}</td>
+                          @endif
+                      @endforeach
                       <td>{{$siswa->tahun_masuk}}</td>
                       <td>{{$siswa->tahun_keluar}}</td>
                       <td>{{$siswa->status}}</td>

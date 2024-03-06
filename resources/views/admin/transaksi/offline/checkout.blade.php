@@ -2,7 +2,7 @@
 
 @section('contain')
 <!-- Page Heading -->
-<h1 class="h3 mb-4 text-gray-800"><b>Transaksi / Checkout / {{$siswa[0]->nama}}</b></h1>
+<h1 class="h3 mb-4 text-gray-800"><b>Transaksi / Checkout / {{$siswa->nama}}</b></h1>
 <div class="container">
     <div class="row">
         <div class="col-sm-6">
@@ -12,11 +12,11 @@
                     <hr>
                     <div class="d-flex justify-content-between mb-3">
                         <b>Atas Nama</b>
-                        <b>{{$siswa[0]->nama}}</b>
+                        <b>{{$siswa->nama}}</b>
                     </div>
                     <div class="d-flex justify-content-between mb-3">
                         <b>Kelas</b>
-                        <b>{{$siswa[0]->kelas_romawi_angka_abjad}} - {{$siswa[0]->nama_kelas}}</b>
+                        <b>{{$siswa->kelas_romawi_angka_abjad}} - {{$siswa->nama_kelas}}</b>
                     </div>
                     <hr>
                     <h5>Keranjang</h5>
@@ -58,7 +58,7 @@
                         <input type="text" class="form-control" id="kembalian" name="kembalian" readonly>
                     </div>
                     <input type="hidden" name="totalProduk" value="{{$num}}">
-                    <input id="" type="hidden" value="{{$siswa[0]->id}}" name="idSiswa">
+                    <input id="" type="hidden" value="{{$siswa->id}}" name="idSiswa">
                     <div class="d-grid gap-2">
                         <button class="btn b-primary" type="submit" onclick="return confirm('Apakah Sudah Sesuai?')">Selesai dan Bayarkan</button>
                     </div>

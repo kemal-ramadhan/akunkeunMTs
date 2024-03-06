@@ -11,6 +11,7 @@ use App\Models\ProdukLangsung;
 use App\Models\Keranjang;
 use App\Models\Pesanan;
 use App\Models\Cicilan;
+use App\Models\Versi;
 use App\Models\Orangtuawali;
 
 use Illuminate\Support\Facades\Storage;
@@ -57,17 +58,18 @@ class HostController extends Controller
     {
         $produkLangsung = DB::table('hub_produk_langsungs')
             ->join('produk_langsungs', 'hub_produk_langsungs.id_produk_langsung', '=', 'produk_langsungs.id')
-            ->join('siswas', 'hub_produk_langsungs.id_kelas', '=', 'siswas.id_kelas')
+            ->join('hub_kelas_siswas', 'hub_produk_langsungs.id_kelas', '=', 'hub_kelas_siswas.id_kelas')
+            ->join('siswas', 'hub_kelas_siswas.id_siswa', '=', 'siswas.id')
+            ->join('kelas', 'hub_kelas_siswas.id_kelas', '=', 'kelas.id')
             ->join('orangtuawalis', 'siswas.id_ortu', '=', 'orangtuawalis.id')
-            ->select('produk_langsungs.id as IdProdukLangsung', 'produk_langsungs.versi', 'produk_langsungs.nama_produk_pembayaran', 'produk_langsungs.nominal', 'produk_langsungs.keterangan', 'produk_langsungs.priode_awal', 'produk_langsungs.priode_akhir', 'produk_langsungs.status', 'hub_produk_langsungs.id_kelas', 'siswas.nama', 'siswas.id as IdSiswa', 'orangtuawalis.nama as wali')
+            ->select('produk_langsungs.id as IdProdukLangsung', 'produk_langsungs.versi', 'produk_langsungs.nama_produk_pembayaran', 'produk_langsungs.nominal', 'produk_langsungs.keterangan', 'produk_langsungs.priode_awal', 'produk_langsungs.priode_akhir', 'produk_langsungs.status', 'hub_produk_langsungs.id_kelas', 'siswas.nama', 'siswas.id as IdSiswa', 'orangtuawalis.nama as wali', 'kelas.kelas_romawi_angka_abjad', 'kelas.nama_kelas')
             ->where('orangtuawalis.id', auth('wali')->user()->id)
             ->get();
         $riwayatLangsung = DB::table('pesanans')
             ->join('siswas', 'pesanans.id_siswa', '=', 'siswas.id')
-            ->join('kelas', 'siswas.id_kelas', '=', 'kelas.id')
             ->join('detail_pesanans', 'pesanans.id', '=', 'detail_pesanans.id_pesanan')
             ->join('orangtuawalis', 'siswas.id_ortu', '=', 'orangtuawalis.id')
-            ->select('detail_pesanans.id_produk_langsung', 'detail_pesanans.id as idDetailPesanan', 'siswas.id as IdSiswa', 'siswas.nama', 'kelas.kelas_romawi_angka_abjad', 'kelas.nama_kelas', 'pesanans.updated_at as tanggalBayar', 'pesanans.status', 'orangtuawalis.nama as namaOrangTuaWali')
+            ->select('detail_pesanans.id_produk_langsung', 'detail_pesanans.id as idDetailPesanan', 'siswas.id as IdSiswa', 'siswas.nama', 'pesanans.updated_at as tanggalBayar', 'pesanans.status', 'orangtuawalis.nama as namaOrangTuaWali')
             ->where('orangtuawalis.id', auth('wali')->user()->id)
             ->get();
         $produkCicilan = DB::table('hub_cicilans')
@@ -91,17 +93,18 @@ class HostController extends Controller
     {
         $produkLangsung = DB::table('hub_produk_langsungs')
             ->join('produk_langsungs', 'hub_produk_langsungs.id_produk_langsung', '=', 'produk_langsungs.id')
-            ->join('siswas', 'hub_produk_langsungs.id_kelas', '=', 'siswas.id_kelas')
+            ->join('hub_kelas_siswas', 'hub_produk_langsungs.id_kelas', '=', 'hub_kelas_siswas.id_kelas')
+            ->join('siswas', 'hub_kelas_siswas.id_siswa', '=', 'siswas.id')
+            ->join('kelas', 'hub_kelas_siswas.id_kelas', '=', 'kelas.id')
             ->join('orangtuawalis', 'siswas.id_ortu', '=', 'orangtuawalis.id')
-            ->select('produk_langsungs.id as IdProdukLangsung', 'produk_langsungs.versi', 'produk_langsungs.nama_produk_pembayaran', 'produk_langsungs.nominal', 'produk_langsungs.keterangan', 'produk_langsungs.priode_awal', 'produk_langsungs.priode_akhir', 'produk_langsungs.status', 'hub_produk_langsungs.id_kelas', 'siswas.nama', 'siswas.id as IdSiswa', 'orangtuawalis.nama as wali')
+            ->select('produk_langsungs.id as IdProdukLangsung', 'produk_langsungs.versi', 'produk_langsungs.nama_produk_pembayaran', 'produk_langsungs.nominal', 'produk_langsungs.keterangan', 'produk_langsungs.priode_awal', 'produk_langsungs.priode_akhir', 'produk_langsungs.status', 'hub_produk_langsungs.id_kelas', 'siswas.nama', 'siswas.id as IdSiswa', 'orangtuawalis.nama as wali', 'kelas.kelas_romawi_angka_abjad', 'kelas.nama_kelas')
             ->where('orangtuawalis.id', auth('wali')->user()->id)
             ->get();
         $riwayatLangsung = DB::table('pesanans')
             ->join('siswas', 'pesanans.id_siswa', '=', 'siswas.id')
-            ->join('kelas', 'siswas.id_kelas', '=', 'kelas.id')
             ->join('detail_pesanans', 'pesanans.id', '=', 'detail_pesanans.id_pesanan')
             ->join('orangtuawalis', 'siswas.id_ortu', '=', 'orangtuawalis.id')
-            ->select('detail_pesanans.id_produk_langsung', 'detail_pesanans.id as idDetailPesanan', 'siswas.id as IdSiswa', 'siswas.nama', 'kelas.kelas_romawi_angka_abjad', 'kelas.nama_kelas', 'pesanans.updated_at as tanggalBayar', 'pesanans.status', 'orangtuawalis.nama as namaOrangTuaWali')
+            ->select('detail_pesanans.id_produk_langsung', 'detail_pesanans.id as idDetailPesanan', 'siswas.id as IdSiswa', 'siswas.nama', 'pesanans.updated_at as tanggalBayar', 'pesanans.status', 'orangtuawalis.nama as namaOrangTuaWali')
             ->where('orangtuawalis.id', auth('wali')->user()->id)
             ->get();
         $produkCicilan = DB::table('hub_cicilans')
@@ -257,16 +260,28 @@ class HostController extends Controller
     public function profile()
     {
         $idOrtu = auth('wali')->user()->id;
+        $activeVersi = Versi::where('status', 'Aktif')->first();
         $siswas = DB::table('siswas')
-                ->join('kelas', 'siswas.id_kelas', '=', 'kelas.id')
+                ->join('hub_kelas_siswas', 'hub_kelas_siswas.id_siswa', '=', 'siswas.id')
+                ->join('kelas', 'hub_kelas_siswas.id_kelas', '=', 'kelas.id')
                 ->select('siswas.nama', 'kelas.nama_kelas', 'kelas.kelas_romawi_angka_abjad')
                 ->where('siswas.id_ortu', $idOrtu)
+                ->where('hub_kelas_siswas.id_versi', $activeVersi->id)
                 ->get();
         return view('public.profile', [
             'title' => 'Profile Saya',
             'active' => 'profile',
             'biodata' => Orangtuawali::find(auth('wali')->user()->id),
             'siswas' => $siswas
+        ]);
+    }
+    
+    public function new_password()
+    {
+        return view('public.new_password', [
+            'title' => 'Password Baru',
+            'active' => 'profile',
+            'biodata' => Orangtuawali::find(auth('wali')->user()->id),
         ]);
     }
 
@@ -435,6 +450,19 @@ class HostController extends Controller
         ]);
 
         return redirect()->route('profile')->with('success', 'Data Telah Diperbaharui!');
+    }
+
+    public function updateNewPassword(Request $request)
+    {
+        $idOrtu = auth('wali')->user()->id;
+        DB::table('orangtuawalis')
+        ->where('id', $idOrtu)
+        ->update([
+            'password' => bcrypt($request->password),
+            'updated_at' => now(),
+        ]);
+
+        return redirect()->route('profile')->with('success', 'Password Telah Diperbaharui');
 
     }
 

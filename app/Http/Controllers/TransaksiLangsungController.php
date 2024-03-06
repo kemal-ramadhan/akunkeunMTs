@@ -29,8 +29,12 @@ class TransaksiLangsungController extends Controller
     {
         $siswa = DB::table('siswas')
                 ->join('orangtuawalis', 'siswas.id_ortu', '=', 'orangtuawalis.id')
-                ->join('kelas', 'siswas.id_kelas', '=', 'kelas.id')
-                ->select('siswas.id','siswas.nisn', 'siswas.nis', 'siswas.nama as namaSiswa', 'orangtuawalis.nama', 'kelas.kelas_romawi_angka_abjad', 'kelas.nama_kelas', 'siswas.tempat_lahir', 'siswas.tanggal_lahir', 'siswas.no_telepon', 'siswas.email', 'siswas.tahun_masuk', 'siswas.tahun_keluar', 'siswas.status')
+                ->select('siswas.id','siswas.nisn', 'siswas.nis', 'siswas.nama as namaSiswa', 'orangtuawalis.nama', 'siswas.tempat_lahir', 'siswas.tanggal_lahir', 'siswas.no_telepon', 'siswas.email', 'siswas.tahun_masuk', 'siswas.tahun_keluar', 'siswas.status')
+                ->get();
+        $selectKelas = DB::table('hub_kelas_siswas')
+                ->join('kelas', 'hub_kelas_siswas.id_kelas', '=', 'kelas.id')
+                ->select('kelas.kelas_romawi_angka_abjad', 'kelas.nama_kelas', 'hub_kelas_siswas.id_siswa')
+                ->where('hub_kelas_siswas.id_versi', session('versi'))
                 ->get();
         return view('admin.transaksi.offline.index', [
             'title' => 'Transaksi Langsung Siswa',
@@ -39,7 +43,8 @@ class TransaksiLangsungController extends Controller
             'walis' => Orangtuawali::all(),
             'siswas' => $siswa,
             'total' => Siswa::count(),
-            'totalKelas' => Kelas::count(),
+            'totalKelas' => Kelas::where('id_versi', session('versi'))->count(),
+            'selectkelas' => $selectKelas,
         ]);
     }
     
@@ -47,8 +52,10 @@ class TransaksiLangsungController extends Controller
     {
         $siswa = DB::table('siswas')
                 ->join('orangtuawalis', 'siswas.id_ortu', '=', 'orangtuawalis.id')
-                ->join('kelas', 'siswas.id_kelas', '=', 'kelas.id')
+                ->join('hub_kelas_siswas', 'hub_kelas_siswas.id_siswa', '=', 'siswas.id')
+                ->join('kelas', 'hub_kelas_siswas.id_kelas', '=', 'kelas.id')
                 ->select('siswas.id','siswas.nisn', 'siswas.nis', 'siswas.nama as namaSiswa', 'orangtuawalis.nama', 'kelas.kelas_romawi_angka_abjad', 'kelas.nama_kelas', 'siswas.tempat_lahir', 'siswas.tanggal_lahir', 'siswas.no_telepon', 'siswas.email', 'siswas.tahun_masuk', 'siswas.tahun_keluar', 'siswas.status')
+                ->where('hub_kelas_siswas.id_versi', session('versi'))
                 ->get();
         return view('admin.transaksi.offline.cicilan', [
             'title' => 'Transaksi Cicilan Siswa',
@@ -57,17 +64,19 @@ class TransaksiLangsungController extends Controller
             'walis' => Orangtuawali::all(),
             'siswas' => $siswa,
             'total' => Siswa::count(),
-            'totalKelas' => Kelas::count(),
+            'totalKelas' => Kelas::where('id_versi', session('versi'))->count(),
         ]);
     }
     
     public function indexTransaksiSiswa($id)
     {
-        $siswa = DB::table('siswas')
-                ->join('kelas', 'siswas.id_kelas', '=', 'kelas.id')
-                ->select('siswas.id', 'siswas.nama', 'kelas.nama_kelas', 'kelas.kelas_romawi_angka_abjad')
+        $siswa = DB::table('hub_kelas_siswas')
+                ->join('siswas', 'hub_kelas_siswas.id_siswa', '=', 'siswas.id')
+                ->join('kelas', 'hub_kelas_siswas.id_kelas', '=', 'kelas.id')
+                ->select('siswas.id', 'siswas.nama', 'kelas.kelas_romawi_angka_abjad', 'kelas.nama_kelas')
                 ->where('siswas.id', $id)
-                ->get();
+                ->where('hub_kelas_siswas.id_versi', session('versi'))
+                ->first();
         $keranjang = DB::table('keranjangs')
                 ->join('produk_langsungs', 'keranjangs.id_produk_langsung', '=', 'produk_langsungs.id')
                 ->select('keranjangs.id', 'produk_langsungs.id as idProduk', 'produk_langsungs.nama_produk_pembayaran', 'produk_langsungs.nominal')
@@ -80,9 +89,20 @@ class TransaksiLangsungController extends Controller
                 ->sum('nominal');
         $produkLangsung = DB::table('hub_produk_langsungs')
                 ->join('produk_langsungs', 'hub_produk_langsungs.id_produk_langsung', '=', 'produk_langsungs.id')
-                ->join('siswas', 'hub_produk_langsungs.id_kelas', '=', 'siswas.id_kelas')
-                ->select('produk_langsungs.id as IdProdukLangsung', 'produk_langsungs.versi', 'produk_langsungs.nama_produk_pembayaran', 'produk_langsungs.nominal', 'produk_langsungs.keterangan', 'produk_langsungs.priode_awal', 'produk_langsungs.priode_akhir', 'produk_langsungs.status', 'hub_produk_langsungs.id_kelas', 'siswas.nama')
+                ->join('hub_kelas_siswas', 'hub_produk_langsungs.id_kelas', '=', 'hub_kelas_siswas.id_kelas')
+                ->join('siswas', 'hub_kelas_siswas.id_siswa', '=', 'siswas.id')
+                ->select('produk_langsungs.id AS IdProdukLangsung', 
+                        'produk_langsungs.versi', 
+                        'produk_langsungs.nama_produk_pembayaran', 
+                        'produk_langsungs.nominal', 
+                        'produk_langsungs.keterangan', 
+                        'produk_langsungs.priode_awal', 
+                        'produk_langsungs.priode_akhir', 
+                        'produk_langsungs.status', 
+                        'hub_produk_langsungs.id_kelas', 
+                        'siswas.nama')
                 ->where('siswas.id', $id)
+                ->where('produk_langsungs.versi', session('versi'))
                 ->get();
         $kelas = DB::table('hub_produk_langsungs')
                 ->join('kelas', 'hub_produk_langsungs.id_kelas', '=', 'kelas.id')
@@ -91,9 +111,8 @@ class TransaksiLangsungController extends Controller
                 ->get();
         $riwayat = DB::table('pesanans')
                 ->join('siswas', 'pesanans.id_siswa', '=', 'siswas.id')
-                ->join('kelas', 'siswas.id_kelas', '=', 'kelas.id')
                 ->join('detail_pesanans', 'pesanans.id', '=', 'detail_pesanans.id_pesanan')
-                ->select('detail_pesanans.id_produk_langsung', 'detail_pesanans.id as idDetailPesanan', 'siswas.id as IdSiswa', 'siswas.nama', 'kelas.kelas_romawi_angka_abjad', 'kelas.nama_kelas', 'pesanans.updated_at as tanggalBayar', 'pesanans.status')
+                ->select('detail_pesanans.id_produk_langsung', 'detail_pesanans.id as idDetailPesanan', 'siswas.id as IdSiswa', 'siswas.nama', 'pesanans.updated_at as tanggalBayar', 'pesanans.status')
                 ->where('siswas.id', $id)
                 ->get();
         return view('admin.transaksi.offline.transaksi', [
@@ -111,9 +130,11 @@ class TransaksiLangsungController extends Controller
     public function indexCicilanSiswa($id)
     {
         $siswa = DB::table('siswas')
-                ->join('kelas', 'siswas.id_kelas', '=', 'kelas.id')
+                ->join('hub_kelas_siswas', 'hub_kelas_siswas.id_siswa', '=', 'siswas.id')
+                ->join('kelas', 'hub_kelas_siswas.id_kelas', '=', 'kelas.id')
                 ->select('siswas.id', 'siswas.nama', 'kelas.nama_kelas', 'kelas.kelas_romawi_angka_abjad')
                 ->where('siswas.id', $id)
+                ->where('hub_kelas_siswas.id_versi', session('versi'))
                 ->get();
         $produkCicilan = DB::table('hub_cicilans')
                 ->join('pembayaran_cicilans', 'hub_cicilans.id_produk_cicilan', '=', 'pembayaran_cicilans.id')
@@ -132,9 +153,11 @@ class TransaksiLangsungController extends Controller
     {
         $hubSiswa = HubCicilan::find($id);
         $siswa = DB::table('siswas')
-                ->join('kelas', 'siswas.id_kelas', '=', 'kelas.id')
+                ->join('hub_kelas_siswas', 'hub_kelas_siswas.id_siswa', '=', 'siswas.id')
+                ->join('kelas', 'hub_kelas_siswas.id_kelas', '=', 'kelas.id')
                 ->select('siswas.id', 'siswas.nama', 'kelas.nama_kelas', 'kelas.kelas_romawi_angka_abjad')
                 ->where('siswas.id', $hubSiswa->id_siswa)
+                ->where('hub_kelas_siswas.id_versi', session('versi'))
                 ->get();
         $produkCicilan = DB::table('hub_cicilans')
                 ->join('pembayaran_cicilans', 'hub_cicilans.id_produk_cicilan', '=', 'pembayaran_cicilans.id')
@@ -166,11 +189,18 @@ class TransaksiLangsungController extends Controller
     public function invoiceCicilan($id)
     {
         $hubSiswa = HubCicilan::find($id);
-        $siswa = DB::table('siswas')
-                ->join('kelas', 'siswas.id_kelas', '=', 'kelas.id')
-                ->select('siswas.id', 'siswas.nama', 'kelas.nama_kelas', 'kelas.kelas_romawi_angka_abjad')
+        $siswa = DB::table('hub_kelas_siswas')
+                ->join('siswas', 'hub_kelas_siswas.id_siswa', '=', 'siswas.id')
+                ->join('kelas', 'hub_kelas_siswas.id_kelas', '=', 'kelas.id')
+                ->select('siswas.id', 'siswas.nama', 'kelas.kelas_romawi_angka_abjad', 'kelas.nama_kelas')
                 ->where('siswas.id', $hubSiswa->id_siswa)
+                ->where('hub_kelas_siswas.id_versi', session('versi'))
                 ->first();
+        // $siswa = DB::table('siswas')
+        //         ->join('kelas', 'siswas.id_kelas', '=', 'kelas.id')
+        //         ->select('siswas.id', 'siswas.nama', 'kelas.nama_kelas', 'kelas.kelas_romawi_angka_abjad')
+        //         ->where('siswas.id', $hubSiswa->id_siswa)
+        //         ->first();
         $produkCicilan = DB::table('hub_cicilans')
                 ->join('pembayaran_cicilans', 'hub_cicilans.id_produk_cicilan', '=', 'pembayaran_cicilans.id')
                 ->select('pembayaran_cicilans.id', 'pembayaran_cicilans.nama_cicilan', 'pembayaran_cicilans.nominal', 'pembayaran_cicilans.keterangan', 'pembayaran_cicilans.priode_awal', 'pembayaran_cicilans.priode_akhir', 'hub_cicilans.status', 'hub_cicilans.id_siswa', 'hub_cicilans.id as IdCicilan')
@@ -221,11 +251,13 @@ class TransaksiLangsungController extends Controller
     
     public function indexCheckoutSiswa($id)
     {
-        $siswa = DB::table('siswas')
-                ->join('kelas', 'siswas.id_kelas', '=', 'kelas.id')
-                ->select('siswas.id', 'siswas.nama', 'kelas.nama_kelas', 'kelas.kelas_romawi_angka_abjad')
+        $siswa = DB::table('hub_kelas_siswas')
+                ->join('siswas', 'hub_kelas_siswas.id_siswa', '=', 'siswas.id')
+                ->join('kelas', 'hub_kelas_siswas.id_kelas', '=', 'kelas.id')
+                ->select('siswas.id', 'siswas.nama', 'kelas.kelas_romawi_angka_abjad', 'kelas.nama_kelas')
                 ->where('siswas.id', $id)
-                ->get();
+                ->where('hub_kelas_siswas.id_versi', session('versi'))
+                ->first();
         $keranjang = DB::table('keranjangs')
                 ->join('produk_langsungs', 'keranjangs.id_produk_langsung', '=', 'produk_langsungs.id')
                 ->select('keranjangs.id', 'produk_langsungs.id as idProduk', 'produk_langsungs.nama_produk_pembayaran', 'produk_langsungs.nominal')
@@ -365,25 +397,27 @@ class TransaksiLangsungController extends Controller
         return redirect()->route('invoice', ['id' => $lastPesanan])->with('success', 'Pembayaran Telah diproses!');
 
     }
-    
-    public function invoice($id)
-    {
-        return view('admin.transaksi.offline.printStruk', [
-            'title' => 'Invoice',
-            'active' => 'offline',
-            'invoice' => Pesanan::find($id)
-        ]);
-
-    }
 
     public function unduhStruk($lastPesanan)
     {
         $siswa = DB::table('pesanans')
                 ->join('siswas', 'pesanans.id_siswa', '=', 'siswas.id')
-                ->join('kelas', 'siswas.id_kelas', '=', 'kelas.id')
-                ->select('pesanans.id as IdPesanan', 'siswas.nama', 'kelas.nama_kelas', 'kelas.kelas_romawi_angka_abjad', 'pesanans.updated_at as tglBayar')
+                ->join('hub_kelas_siswas', 'hub_kelas_siswas.id_siswa', '=', 'siswas.id')
+                ->join('kelas', 'hub_kelas_siswas.id_kelas', '=', 'kelas.id')
+                ->select('pesanans.id AS IdPesanan', 
+                        'siswas.nama', 
+                        'kelas.nama_kelas', 
+                        'kelas.kelas_romawi_angka_abjad', 
+                        'pesanans.updated_at AS tglBayar')
                 ->where('pesanans.id', $lastPesanan)
                 ->first();
+
+        // $siswa = DB::table('pesanans')
+        //         ->join('siswas', 'pesanans.id_siswa', '=', 'siswas.id')
+        //         ->join('kelas', 'siswas.id_kelas', '=', 'kelas.id')
+        //         ->select('pesanans.id as IdPesanan', 'siswas.nama', 'kelas.nama_kelas', 'kelas.kelas_romawi_angka_abjad', 'pesanans.updated_at as tglBayar')
+        //         ->where('pesanans.id', $lastPesanan)
+        //         ->first();
         $keranjang = DB::table('detail_pesanans')
                 ->join('produk_langsungs', 'detail_pesanans.id_produk_langsung', '=', 'produk_langsungs.id')
                 ->select('produk_langsungs.nama_produk_pembayaran', 'detail_pesanans.nominal')
@@ -428,6 +462,16 @@ class TransaksiLangsungController extends Controller
 
         // Logika bisnis atau operasi lainnya
         return $dompdf->stream($namaFile);
+    }
+
+    public function invoice($id)
+    {
+        return view('admin.transaksi.offline.printStruk', [
+            'title' => 'Invoice',
+            'active' => 'offline',
+            'invoice' => Pesanan::find($id)
+        ]);
+
     }
 
     /**

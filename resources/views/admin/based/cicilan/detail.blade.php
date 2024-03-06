@@ -74,7 +74,6 @@
                     <th>No</th>
                     <th>NISN/NIS</th>
                     <th>Nama Lengkap</th>
-                    <th>Kelas</th>
                     <th>Tahun Masuk</th>
                     <th>Status CIcilan</th>
                     <th>Status</th>
@@ -86,7 +85,6 @@
                     <th>No</th>
                     <th>NISN/NIS</th>
                     <th>Nama Lengkap</th>
-                    <th>Kelas</th>
                     <th>Tahun Masuk</th>
                     <th>Status CIcilan</th>
                     <th>Status</th>
@@ -102,7 +100,6 @@
                     <td>{{$loop->iteration}}</td>
                     <td>{{$siswa->nisn}}/{{$siswa->nis}}</td>
                     <td>{{$siswa->nama}}</td>
-                    <td>{{$siswa->kelas_romawi_angka_abjad}} - {{$siswa->nama_kelas}}</td>
                     <td>{{$siswa->tahun_masuk}}</td>
                     <td>{{$siswa->statusCicilan}}</td>
                     <td>{{$siswa->status}}</td>

@@ -41,7 +41,6 @@
                         <th>NISN/NIS</th>
                         <th>Nama Lengkap</th>
                         <th>Nama Orang tua</th>
-                        <th>Kelas</th>
                         <th>Tahun Masuk</th>
                         <th>Tahun Keluar</th>
                         <th>Status</th>
@@ -54,7 +53,6 @@
                       <th>NISN/NIS</th>
                       <th>Nama Lengkap</th>
                       <th>Nama Orang tua</th>
-                      <th>Kelas</th>
                       <th>Tahun Masuk</th>
                       <th>Tahun Keluar</th>
                       <th>Status</th>
@@ -71,7 +69,6 @@
                         <td>{{$siswa->nisn}}/{{$siswa->nis}}</td>
                         <td>{{$siswa->namaSiswa}}</td>
                         <td>{{$siswa->nama}}</td>
-                        <td>{{$siswa->kelas_romawi_angka_abjad}} - {{$siswa->nama_kelas}}</td>
                         <td>{{$siswa->tahun_masuk}}</td>
                         <td>{{$siswa->tahun_keluar}}</td>
                         <td>{{$siswa->status}}</td>

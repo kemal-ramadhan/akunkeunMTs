@@ -31,23 +31,12 @@
           <label for="ket" class="form-label">Keterangan</label>
           <textarea class="form-control" id="ket" name="keterangan" rows="3"></textarea>
         </div>
-        <div class="col-sm-6 mb-3">
-          <label for="tahun" class="form-label">Tahun Anggaran</label>
-          <select class="form-select" id="tahun" name="versi" aria-label="Default select example">
-            @foreach ($versis as $versi)
-            @if ($versi->status == 'Aktif')
-            <option value="{{$versi->id}}" selected>{{$versi->nama_versi}} [{{$versi->status}}]</option>
-            @endif
-            <option value="{{$versi->id}}">{{$versi->nama_versi}} [{{$versi->status}}]</option>
-            @endforeach
-          </select>
-        </div>
-      </div>
       <div class="text-center mt-3">
         <a href="/ref-produk-langsung" class="btn b-red">Batal</a>
         <button type="submit" class="btn b-primary">Selanjutnya</button>
       </div>
-      </form>
+      </div>
+    </form>
     
     </div>
 </div>

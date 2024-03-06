@@ -61,8 +61,7 @@ class WaliController extends Controller
     {
         $siswa = DB::table('siswas')
                 ->join('orangtuawalis', 'siswas.id_ortu', '=', 'orangtuawalis.id')
-                ->join('kelas', 'siswas.id_kelas', '=', 'kelas.id')
-                ->select('siswas.id AS IdSiswa', 'siswas.nisn', 'siswas.nis', 'siswas.nama', 'kelas.kelas_romawi_angka_abjad', 'kelas.nama_kelas', 'siswas.no_telepon', 'siswas.email', 'siswas.tahun_masuk', 'siswas.tahun_keluar', 'siswas.status','orangtuawalis.id')
+                ->select('siswas.id AS IdSiswa', 'siswas.nisn', 'siswas.nis', 'siswas.nama', 'siswas.no_telepon', 'siswas.email', 'siswas.tahun_masuk', 'siswas.tahun_keluar', 'siswas.status','orangtuawalis.id')
                 ->where('orangtuawalis.id', $id)
                 ->get();
         return view('admin.based.wali.detail', [
